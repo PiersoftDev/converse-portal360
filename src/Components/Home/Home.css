@@ -1,0 +1,74 @@
+.introduction-text {
+  font-weight: bold;
+}
+
+.introduction-text .primary {
+  color: #22343E;
+  font-size: 3rem;
+}
+
+.introduction-text .secondary {
+  color: #243842;
+  font-size: 1.5rem;
+}
+
+.introduction-text .cta-container {
+  margin-top: 2rem;
+}
+
+.introduction-text  {
+  margin-top: 15%;
+  margin-left: 10%;
+  padding: 0.5rem 1rem;
+  outline: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-color: transparent;
+  transition: all 0.5s;
+}
+
+
+.introduction-text button:active {
+  transform: scale(0.95);
+}
+
+.home-page__hero-image{
+  width: 50vw;
+  height: 100vh;
+}
+
+.home-page__hero-text-container{
+  background-color: #D8C99D;
+
+  
+}
+
+h1{
+  color: #22343E;
+  font-family: Roboto Condensed;
+  font-weight: bolder;
+  margin-left: 3%;
+  margin-top: 3%;
+  float: left;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #22343E;
+  color: #D8C99D;
+  outline: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-color: transparent;
+  transition: all 0.5s;
+  margin-left: 1%;
+  margin-top: 3%;
+}
+
+.home-page__logo{
+  width: 5vw;
+  margin-left: 1%;
+  margin-top: 1%;
+}
