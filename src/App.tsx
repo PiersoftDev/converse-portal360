@@ -1,8 +1,8 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import { Home } from "./Components/Home/NewHome";
-import { Login } from "./Components/Login/Login";
-import "./Common/Styles/Global.css";
+import { Home } from "./components/home/home";
+import { Login } from "./components/login/login";
+import "./common/styles/global.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {

@@ -1,13 +1,24 @@
-import "./Home.css";
-import HomePagePalette from "../../Images/homepagepalette.png";
-import Finance from "../../Images/finance.svg";
-import HR from "../../Images/hr.svg";
-import Inventory from "../../Images/inventory.svg";
-import Construction from "../../Images/construction.svg";
+import React from "react";
+import { Col, Row } from "antd";
+import "./home.css";
+import heroImage from "../../images/enhanced.png";
+import logo from "../../images/logo.png";
+import { useNavigate } from "react-router-dom";
+
 export const Home = () => {
+  const navigate = useNavigate();
+  const goToLogin = () => {
+    navigate("/login");
+  };
   return (
-    <div className="content">
-      <div className="details">
+    <Row>
+      <Col span={12} push={12}>
+        <img className="home-page__hero-image" src={heroImage} alt="Home Page" />
+      </Col>
+      <Col className="home-page__hero-text-container" span={12} pull={12}>
+        <div>
+          <img className="home-page__logo" src={logo} alt="Logo" />
+        </div>
         <div className="introduction-text">
           <span className="primary">Building Success,</span>
           <br />
@@ -20,32 +31,10 @@ export const Home = () => {
             Easily manage projects, track expenses, <br /> automate procurement processes & more.
           </span>
           <div className="cta-container">
-            <button>Get Started</button>
+            <button onClick={goToLogin}>Get Started</button>
           </div>
         </div>
-        <div className="construction-image-palette">
-          <img src={HomePagePalette} className="palette" alt="Home Page Palette" />
-          <img src={Construction} alt="Construction" className="construction-image" />
-        </div>
-      </div>
-      <div className="features">
-        <div className="title">Features</div>
-        <div className="cards">
-          <div>
-            <img src={Finance} alt="Finance" />
-            <br />
-            <p>Finance</p>
-          </div>
-          <div>
-            <img src={HR} alt="Human Resources" />
-            <p>Human Resources</p>
-          </div>
-          <div>
-            <img src={Inventory} alt="Inventory" />
-            <p>Inventory</p>
-          </div>
-        </div>
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 };

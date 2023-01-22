@@ -27,16 +27,16 @@ section {
 }
 
 .strike-through {
-  text-decoration: line-through;
   position: relative;
-  white-space: nowrap;
 }
 
 .strike-through:after {
-  border-top: 5px solid #22343E;
   position: absolute;
   content: "";
+  background-color: #22343e;
+  height: 5px;
   right: 0;
-  top:50%;
+  top: 50%;
   left: 0;
+  margin-top: 3px;
 }
