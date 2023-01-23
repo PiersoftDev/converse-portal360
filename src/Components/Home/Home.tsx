@@ -27,13 +27,21 @@ export const Home = () => {
   };
   return (
     <div>
-      <Dialog open={showLoginPopup} onClose={handleClose} TransitionComponent={Transition}>
+      <Dialog
+        open={showLoginPopup}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
         <Login />
       </Dialog>
 
       <Row>
         <Col span={12} push={12}>
-          <img className="home-page__hero-image" src={heroImage} alt="Home Page" />
+          <img
+            className="home-page__hero-image"
+            src={heroImage}
+            alt="Home Page"
+          />
         </Col>
         <Col className="home-page__hero-text-container" span={12} pull={12}>
           <div>
@@ -43,12 +51,14 @@ export const Home = () => {
             <span className="primary">Building Success,</span>
             <br />
             <span className="primary">
-              <span className="strike-through">one</span> multiple projects at a time.
+              <span className="strike-through">one</span> multiple projects at a
+              time.
             </span>
             <br />
             <br />
             <span className="secondary">
-              Easily manage projects, track expenses, <br /> automate procurement processes & more.
+              Easily manage projects, track expenses, <br /> automate
+              procurement processes & more.
             </span>
             <div className="cta-container">
               <button onClick={goToLogin}>Get Started</button>
