@@ -1,65 +1,6 @@
-.login-page {
-  background-color: #080710;
-  color: white;
-}
 .login-container {
   width: min(80vw, 420px);
-  height: 520px;
   margin: auto;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 50px;
-}
-
-.options {
-  display: grid;
-  width: 60%;
-  justify-items: center;
-  grid-template-columns: repeat(2, 1fr);
-  margin: 2rem auto;
-  font-size: 24px;
-}
-.option {
-  position: relative;
-  cursor: pointer;
-}
-
-.option.selected {
-  font-weight: bold;
-  font-size: 24;
-}
-
-.option::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 3px;
-  bottom: 0;
-  left: 0;
-  background-color: #e39b10;
-  transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
-}
-.option.selected::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-
-.login-form,
-.signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding: 1rem 2rem;
-}
-
-.form-control {
-  background-color: #1b2325 !important;
-  color: #e39b10 !important;
-}
-
-.form-control:focus {
-  border-color: #e39b10 !important;
-  box-shadow: 0 0 0 0.25rem rgb(227 155 16 / 0.2) !important;
+  background: linear-gradient(to right, rgba(216, 201, 157, 0.75), rgba(38, 57, 64, 0.35));
+  backdrop-filter: blur(16px);
 }

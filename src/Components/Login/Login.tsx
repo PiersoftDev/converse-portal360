@@ -1,6 +1,8 @@
+import { CssBaseline, Box, TextField, Avatar, Button, Container, Grid, Typography } from "@mui/material";
+// import { Avatar, Typography, Grid, Checkbox } from "antd";
 import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
 import "./login.css";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { ILoginRequest } from "../../models/login-service-model";
 import { postUserLogin } from "../../services/login-service";
 export const Login = () => {
@@ -8,6 +10,7 @@ export const Login = () => {
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
   const login = async () => {
+    setIsLogin(true);
     alert(`Trying to login with Email : ${loginEmail} & Password : ${loginPassword}`);
     const request: ILoginRequest = {
       email: loginEmail,
@@ -17,61 +20,97 @@ export const Login = () => {
     var response = await postUserLogin(request);
     console.log(response);
   };
+  const signup = () => {
+    setIsLogin(false);
+  };
 
   return (
-    <div className="d-flex-center width-100 height-100 login-page">
-      <div className="login-container">
-        <div className="options">
-          <div className={`option ${isLogin ? "selected" : ""}`} onClick={() => setIsLogin(true)}>
-            Login
-          </div>
-          <div className={`option ${!isLogin ? "selected" : ""}`} onClick={() => setIsLogin(false)}>
-            Signup
-          </div>
-        </div>
-        {isLogin && (
-          <div className="login-form">
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
-              </Form.Group>
-              <Form.Group className="mb-4" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
-              </Form.Group>
-              <Button variant="primary" type="button" onClick={login}>
+    <div className="login-container">
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          {isLogin && (
+            <>
+              <Typography component="h1" variant="h5">
                 Log In
-              </Button>
-            </Form>
-          </div>
-        )}
-        {!isLogin && (
-          <div className="signup-form">
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-              </Form.Group>
-              <Form.Group className="mb-4" controlId="formBasicPassword">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="
-              Confirm Password"
-                />
-              </Form.Group>
-              <Button variant="primary" type="button">
-                Register
-              </Button>
-            </Form>
-          </div>
-        )}
-      </div>
+              </Typography>
+              <Box component="form" noValidate sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="new-password"
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                    />
+                  </Grid>
+                </Grid>
+                <Button type="button" onClick={login} fullWidth variant="contained" sx={{ mt: 3, mb: 5 }}>
+                  Log In
+                </Button>
+                <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
+                  <Grid item>
+                    <Button variant="text" onClick={() => setIsLogin(false)}>
+                      New? Create Account
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </>
+          )}
+          {!isLogin && (
+            <>
+              <Typography component="h1" variant="h5">
+                Sign up
+              </Typography>
+              <Box component="form" noValidate sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="First Name" autoFocus />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name" />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" />
+                  </Grid>
+                </Grid>
+                <Button type="button" onClick={signup} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                  Sign Up
+                </Button>
+                <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
+                  <Grid item>
+                    <Button variant="text" onClick={() => setIsLogin(true)}>
+                      Already have an account? Log in
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </>
+          )}
+        </Box>
+      </Container>
     </div>
   );
 };
