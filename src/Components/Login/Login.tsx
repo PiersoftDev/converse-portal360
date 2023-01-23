@@ -4,7 +4,9 @@ import { useState } from "react";
 import "./login.css";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { ILoginRequest } from "../../models/login-service-model";
-import { postUserLogin } from "../../services/login-service";
+import { postUserLogin, signUp} from "../../services/login-service";
+import { PassThrough } from "stream";
+
 export const Login = () => {
   const [isLogin, setIsLogin] = useState<Boolean>(true);
   const [loginEmail, setLoginEmail] = useState<string>("");
@@ -20,8 +22,11 @@ export const Login = () => {
     var response = await postUserLogin(request);
     console.log(response);
   };
-  const signup = () => {
+  const signup = async () => {
     setIsLogin(false);
+    alert(`Trying to login with Email : ${loginEmail} & Password : ${loginPassword}`);
+    // Add validation before doing the api call.
+     await signUp(loginEmail, loginPassword);
   };
 
   return (
@@ -63,7 +68,7 @@ export const Login = () => {
                     />
                   </Grid>
                 </Grid>
-                <Button type="button" onClick={login} fullWidth variant="contained" sx={{ mt: 3, mb: 5 }}>
+                <Button type="button" onClick={signup} fullWidth variant="contained" sx={{ mt: 3, mb: 5 }}>
                   Log In
                 </Button>
                 <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>

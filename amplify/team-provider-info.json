@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-converseportal360-dev-215229-authRole",
+      "UnauthRoleArn": "arn:aws:iam::075801727792:role/amplify-converseportal360-dev-215229-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::075801727792:role/amplify-converseportal360-dev-215229-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-converseportal360-dev-215229-deployment",
+      "UnauthRoleName": "amplify-converseportal360-dev-215229-unauthRole",
+      "StackName": "amplify-converseportal360-dev-215229",
+      "StackId": "arn:aws:cloudformation:ap-south-1:075801727792:stack/amplify-converseportal360-dev-215229/229e1fb0-9b3a-11ed-8b7f-0a0186afe91e",
+      "AmplifyAppId": "dj41nulkxowv4"
+    },
+    "categories": {
+      "auth": {
+        "converseportal360491dc97f": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "dj41nulkxowv4",
+          "type": "manual"
+        }
+      }
+    }
+  }
+}

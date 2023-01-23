@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { ILoginRequest } from "../models/login-service-model";
+import { Auth } from 'aws-amplify';
 
 export const postUserLogin = (request: ILoginRequest) => {
   console.log(request);
@@ -14,3 +15,20 @@ export const postUserLogin = (request: ILoginRequest) => {
       // always executed
     });
 };
+
+export const signUp = async (username: string, password: string) => {
+  try {
+    const { user } = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+        },
+        autoSignIn: { // optional - enables auto sign in after user is confirmed
+            enabled: true,
+        }
+    });
+    console.log(user);
+} catch (error) {
+    console.log('error signing up:', error);
+}
+}
