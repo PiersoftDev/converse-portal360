@@ -11,6 +11,9 @@ export const Login = () => {
   const [isLogin, setIsLogin] = useState<Boolean>(true);
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+
   const login = async () => {
     setIsLogin(true);
     alert(`Trying to login with Email : ${loginEmail} & Password : ${loginPassword}`);
@@ -23,10 +26,7 @@ export const Login = () => {
     console.log(response);
   };
   const signup = async () => {
-    setIsLogin(false);
-    alert(`Trying to login with Email : ${loginEmail} & Password : ${loginPassword}`);
-    // Add validation before doing the api call.
-     await signUp(loginEmail, loginPassword);
+     await signUp(loginEmail, loginPassword, firstName, lastName);
   };
 
   return (
@@ -68,7 +68,7 @@ export const Login = () => {
                     />
                   </Grid>
                 </Grid>
-                <Button type="button" onClick={signup} fullWidth variant="contained" sx={{ mt: 3, mb: 5 }}>
+                <Button type="button" onClick={login} fullWidth variant="contained" sx={{ mt: 3, mb: 5 }}>
                   Log In
                 </Button>
                 <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
