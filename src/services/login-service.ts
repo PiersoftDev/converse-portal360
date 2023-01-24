@@ -16,27 +16,28 @@ export const postUserLogin = (request: ILoginRequest) => {
     });
 };
 
-export const signUp = async (
-  username: string,
-  password: string,
-  givenName: string,
-  middleName: string
-) => {
+export const signUp = async (username: string, password: string, givenName: string) => {
   try {
-    const { user } = await Auth.signUp({
+    const response = await Auth.signUp({
       username,
       password,
       attributes: {
-        givenName,
-        middleName,
+        name: givenName,
       },
       autoSignIn: {
-        // optional - enables auto sign in after user is confirmed
         enabled: true,
       },
     });
-    console.log(user);
+    return response.user;
   } catch (error) {
     console.log("error signing up:", error);
+  }
+};
+
+export const postConfirmSignUp = async (username: string, code: string) => {
+  try {
+    await Auth.confirmSignUp(username, code);
+  } catch (error) {
+    console.log("error confirming sign up", error);
   }
 };

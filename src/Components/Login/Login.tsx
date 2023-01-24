@@ -4,15 +4,20 @@ import { useState } from "react";
 import "./login.css";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { ILoginRequest } from "../../models/login-service-model";
-import { postUserLogin, signUp} from "../../services/login-service";
-import { PassThrough } from "stream";
+import { postUserLogin, signUp, postConfirmSignUp } from "../../services/login-service";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState<Boolean>(true);
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
+  const [signUpEmail, setSignUpEmail] = useState<string>("");
+  const [signUpPassword, setSignUpPassword] = useState<string>("");
+  const [isVerificationCodeSent, setIsVerificationCodeSent] = useState<Boolean>(false);
+  const [verificationCode, setVerificationCode] = useState<string>("");
 
   const login = async () => {
     setIsLogin(true);
@@ -25,8 +30,23 @@ export const Login = () => {
     var response = await postUserLogin(request);
     console.log(response);
   };
+
   const signup = async () => {
-     await signUp(loginEmail, loginPassword, firstName, lastName);
+    try {
+      await signUp(signUpEmail, signUpPassword, `${firstName} ${lastName}`);
+      setIsVerificationCodeSent(true);
+    } catch (e) {
+      setIsVerificationCodeSent(false);
+    }
+  };
+
+  const confirmSignUp = async () => {
+    try {
+      await postConfirmSignUp(signUpEmail, verificationCode);
+      navigate("/");
+    } catch (e) {
+      // show error message
+    }
   };
 
   return (
@@ -87,30 +107,76 @@ export const Login = () => {
                 Sign up
               </Typography>
               <Box component="form" noValidate sx={{ mt: 3 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="First Name" autoFocus />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name" />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" />
-                  </Grid>
-                </Grid>
-                <Button type="button" onClick={signup} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                  Sign Up
-                </Button>
-                <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
-                  <Grid item>
-                    <Button variant="text" onClick={() => setIsLogin(true)}>
-                      Already have an account? Log in
+                {!isVerificationCodeSent && (
+                  <>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          autoComplete="given-name"
+                          name="firstName"
+                          required
+                          fullWidth
+                          id="firstName"
+                          label="First Name"
+                          autoFocus
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" value={signUpEmail} onChange={(e) => setSignUpEmail(e.target.value)} />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          name="password"
+                          label="Password"
+                          type="password"
+                          id="password"
+                          autoComplete="new-password"
+                          value={signUpPassword}
+                          onChange={(e) => setSignUpPassword(e.target.value)}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Button type="button" onClick={signup} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                      Sign Up
                     </Button>
-                  </Grid>
-                </Grid>
+                    <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
+                      <Grid item>
+                        <Button variant="text" onClick={() => setIsLogin(true)}>
+                          Already have an account? Log in
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </>
+                )}
+                {isVerificationCodeSent && (
+                  <>
+                    <Grid container spacing={2} sx={{ mb: 5 }}>
+                      <Grid item sm={12}>
+                        <TextField
+                          autoComplete="verification-code"
+                          name="verificationCode"
+                          required
+                          fullWidth
+                          id="verificationCode"
+                          label="Verification Code"
+                          autoFocus
+                          value={verificationCode}
+                          onChange={(e) => setVerificationCode(e.target.value)}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Button type="button" onClick={confirmSignUp} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                      Confirm Code
+                    </Button>
+                  </>
+                )}
               </Box>
             </>
           )}
