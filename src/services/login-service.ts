@@ -41,3 +41,11 @@ export const postConfirmSignUp = async (username: string, code: string) => {
     console.log("error confirming sign up", error);
   }
 };
+
+export const login = async function signIn(username: string, password: string) {
+  try {
+      const user = await Auth.signIn(username, password);
+  } catch (error) {
+      console.log('error signing in', error);
+  }
+}

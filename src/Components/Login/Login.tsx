@@ -4,7 +4,7 @@ import { useState } from "react";
 import "./login.css";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { ILoginRequest } from "../../models/login-service-model";
-import { postUserLogin, signUp, postConfirmSignUp } from "../../services/login-service";
+import { postUserLogin, signUp, postConfirmSignUp, login } from "../../services/login-service";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
@@ -19,17 +19,18 @@ export const Login = () => {
   const [isVerificationCodeSent, setIsVerificationCodeSent] = useState<Boolean>(false);
   const [verificationCode, setVerificationCode] = useState<string>("");
 
-  const login = async () => {
-    setIsLogin(true);
-    alert(`Trying to login with Email : ${loginEmail} & Password : ${loginPassword}`);
-    const request: ILoginRequest = {
-      email: loginEmail,
-      password: loginPassword,
-    };
-    // Add validation before doing the api call.
-    var response = await postUserLogin(request);
-    console.log(response);
+  const userLogin = async () => {
+    try{
+      await login(loginEmail, loginPassword);
+      console.log("Successfully logged in");
+      setIsLogin(true);
+      navigate("/vendor");
+    }catch(e){
+      setIsLogin(false);
+    }
   };
+
+
 
   const signup = async () => {
     try {
@@ -88,7 +89,7 @@ export const Login = () => {
                     />
                   </Grid>
                 </Grid>
-                <Button type="button" onClick={login} fullWidth variant="contained" sx={{ mt: 3, mb: 5 }}>
+                <Button type="button" onClick={userLogin} fullWidth variant="contained" sx={{ mt: 3, mb: 5 }}>
                   Log In
                 </Button>
                 <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
