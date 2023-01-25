@@ -1,5 +1,26 @@
+import { ColorModeContext, useMode } from "../../theme";
+import { CssBaseline, ThemeProvider, Box } from "@mui/material";
+import { Topbar } from "../../common/components/top_bar/topbar";
+import { Sidebar } from "../../common/components/side_bar/side_bar";
+import { useState } from "react";
+import "react-pro-sidebar/dist/css/styles.css";
+
 export const VendorOnboarding = () => {
-    return (
-<div> Vendor Onboarding</div>
-    );
+  const [theme, colorMode] = useMode();
+  const [isSidebar, setIsSidebar] = useState(true);
+
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="app">
+          <Sidebar isSidebar={isSidebar} />
+          <main className="content">
+            <Topbar setIsSidebar={isSidebar} />
+            <Box>This is Onboarding page.</Box>
+          </main>
+        </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
 };

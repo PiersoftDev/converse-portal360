@@ -19,9 +19,6 @@ function LandingPage() {
           <Sidebar isSidebar={isSidebar} />
           <main className="content">
             <Topbar setIsSidebar={isSidebar} />
-            <Routes>
-              <Route path="/vendor-onboarding" element={<VendorOnboarding />} />
-            </Routes>
           </main>
         </div>
       </ThemeProvider>
