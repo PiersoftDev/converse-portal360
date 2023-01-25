@@ -24,7 +24,7 @@ export const Login = () => {
       await login(loginEmail, loginPassword);
       console.log("Successfully logged in");
       setIsLogin(true);
-      navigate("/vendor");
+      navigate("/dashboard");
     }catch(e){
       setIsLogin(false);
     }
