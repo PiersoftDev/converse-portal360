@@ -137,7 +137,7 @@ export const Sidebar = () => {
             </Typography>
             <Item
               title="Vendor Onboarding"
-              to="/vendor-onboard"
+              to="/vendor-onboarding"
               icon={<RsvpOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
