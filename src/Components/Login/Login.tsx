@@ -3,8 +3,8 @@ import { CssBaseline, Box, TextField, Avatar, Button, Container, Grid, Typograph
 import { useState } from "react";
 import "./login.css";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { ILoginRequest } from "../../models/login-service-model";
-import { postUserLogin, signUp, postConfirmSignUp, login } from "../../services/login-service";
+// import { ILoginRequest } from "../../models/login-service-model";
+import { signUp, postConfirmSignUp, login } from "../../services/login-service";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
@@ -20,17 +20,15 @@ export const Login = () => {
   const [verificationCode, setVerificationCode] = useState<string>("");
 
   const userLogin = async () => {
-    try{
+    try {
       await login(loginEmail, loginPassword);
       console.log("Successfully logged in");
       setIsLogin(true);
       navigate("/dashboard");
-    }catch(e){
+    } catch (e) {
       setIsLogin(false);
     }
   };
-
-
 
   const signup = async () => {
     try {

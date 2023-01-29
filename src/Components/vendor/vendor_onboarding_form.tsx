@@ -7,13 +7,12 @@ import StepButton from "@mui/material/StepButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
 
 const steps = ["Company Details", "Contact Information", "KYC", "Listings"];
 
 export default function HorizontalNonLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState({});
+  const [completed, setCompleted] = React.useState(new Map());
 
   const totalSteps = () => {
     return steps.length;
@@ -45,27 +44,27 @@ export default function HorizontalNonLinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleStep = (step) => () => {
+  const handleStep = (step: number) => () => {
     setActiveStep(step);
   };
 
   const handleComplete = () => {
-    const newCompleted = completed;
-    newCompleted[activeStep] = true;
+    const newCompleted = { ...completed };
+    newCompleted.set(activeStep, true);
     setCompleted(newCompleted);
     handleNext();
   };
 
   const handleReset = () => {
     setActiveStep(0);
-    setCompleted({});
+    setCompleted(new Map());
   };
 
   return (
     <Box sx={{ ml: "20px", width: "80%" }}>
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
-          <Step key={label} completed={completed[index]}>
+          <Step key={label} completed={completed.get(index)}>
             <StepButton color="inherit" onClick={handleStep(index)}>
               {label}
             </StepButton>
@@ -75,9 +74,7 @@ export default function HorizontalNonLinearStepper() {
       <div>
         {allStepsCompleted() ? (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
-            </Typography>
+            <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleReset}>Reset</Button>
@@ -95,58 +92,28 @@ export default function HorizontalNonLinearStepper() {
               display="grid"
               justifyContent="space-between"
             >
-              <TextField
-                id="outlined-basic"
-                label="Company Name"
-                variant="outlined"
-                sx={{ mt: 3, ml: 6, width: "75ch" }}
-              />
-              <TextField
-                id="outlined-basic"
-                label="Company Type"
-                variant="outlined"
-                sx={{ mt: 3, ml: 6, width: "75ch" }}
-              />
-              <TextField
-                id="outlined-basic"
-                label="Company URL"
-                variant="outlined"
-                sx={{ mt: 3, ml: 6, width: "75ch" }}
-              />
-              <TextField
-                id="outlined-basic"
-                label="Service"
-                variant="outlined"
-                sx={{ mt: 3, ml: 6, width: "75ch" }}
-              />
-              <TextField
-                id="outlined-basic"
-                label="Enter Store Description"
-                variant="outlined"
-                sx={{ mt: 3, ml: 6, width: "75ch" }}
-              />
+              <TextField id="outlined-basic" label="Company Name" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
+              <TextField id="outlined-basic" label="Company Type" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
+              <TextField id="outlined-basic" label="Company URL" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
+              <TextField id="outlined-basic" label="Service" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
+              <TextField id="outlined-basic" label="Enter Store Description" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
 
-              <FormControl fullWidth>
-                
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  sx={{ mt: 1, ml: 6, width: "75ch" }}
-                  label="Age"
-                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
+              <Box sx={{ mt: 3, ml: 6, width: "75ch" }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                  <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Age">
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
+              <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
                 Back
               </Button>
               <Box sx={{ flex: "1 1 auto" }} />
@@ -154,19 +121,12 @@ export default function HorizontalNonLinearStepper() {
                 Next
               </Button>
               {activeStep !== steps.length &&
-                (completed[activeStep] ? (
-                  <Typography
-                    variant="caption"
-                    sx={{ display: "inline-block" }}
-                  >
+                (completed.get(activeStep) ? (
+                  <Typography variant="caption" sx={{ display: "inline-block" }}>
                     Step {activeStep + 1} already completed
                   </Typography>
                 ) : (
-                  <Button onClick={handleComplete}>
-                    {completedSteps() === totalSteps() - 1
-                      ? "Finish"
-                      : "Complete Step"}
-                  </Button>
+                  <Button onClick={handleComplete}>{completedSteps() === totalSteps() - 1 ? "Finish" : "Complete Step"}</Button>
                 ))}
             </Box>
           </React.Fragment>
