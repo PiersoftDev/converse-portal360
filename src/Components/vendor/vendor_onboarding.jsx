@@ -4,6 +4,7 @@ import { Topbar } from "../../common/components/top_bar/topbar";
 import { Sidebar } from "../../common/components/side_bar/side_bar";
 import { useState } from "react";
 import "react-pro-sidebar/dist/css/styles.css";
+import VerticalLinearStepper from "./vendor_onboarding_form";
 
 export const VendorOnboarding = () => {
   const [theme, colorMode] = useMode();
@@ -17,7 +18,7 @@ export const VendorOnboarding = () => {
           <Sidebar isSidebar={isSidebar} />
           <main className="content">
             <Topbar setIsSidebar={isSidebar} />
-            <Box>This is Onboarding page.</Box>
+            <Box m="30px"><VerticalLinearStepper/></Box>
           </main>
         </div>
       </ThemeProvider>
