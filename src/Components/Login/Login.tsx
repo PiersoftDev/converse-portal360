@@ -9,7 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 // import { Avatar, Typography, Grid, Checkbox } from "antd";
-import { useState } from "react";
+import { useState} from "react";
+import { createContext } from "react";
 import "./login.css";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 // import { ILoginRequest } from "../../models/login-service-model";
@@ -19,6 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const userContext = createContext(null);
   const [isLogin, setIsLogin] = useState<Boolean>(true);
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
@@ -30,11 +32,12 @@ export const Login = () => {
     useState<Boolean>(false);
   const [verificationCode, setVerificationCode] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
 
   const userLogin = async () => {
     try {
       setLoading(true);
-      await login(loginEmail, loginPassword);
+      const user = await login(loginEmail, loginPassword);
       console.log("Successfully logged in");
       setIsLogin(true);
       navigate("/dashboard");
