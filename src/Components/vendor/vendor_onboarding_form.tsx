@@ -1,12 +1,14 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { InputLabel, Select, MenuItem, FormControl } from "@mui/material/";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
+import { CompanyDetails } from "./company-details";
+import { CompanyContactInfo } from "./company-contact-info";
+import { VendorListings } from "./vendor-listings";
+import { CompanyKYC } from "./company-kyc";
 
 const steps = ["Company Details", "Contact Information", "KYC", "Listings"];
 
@@ -74,7 +76,9 @@ export default function HorizontalNonLinearStepper() {
       <div>
         {allStepsCompleted() ? (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
+            <Typography sx={{ mt: 2, mb: 1 }}>
+              All steps completed - you&apos;re finished
+            </Typography>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleReset}>Reset</Button>
@@ -82,38 +86,14 @@ export default function HorizontalNonLinearStepper() {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Box
-              component="form"
-              sx={{
-                mt: 5,
-              }}
-              noValidate
-              autoComplete="off"
-              display="grid"
-              justifyContent="space-between"
-            >
-              <TextField id="outlined-basic" label="Company Name" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
-              <TextField id="outlined-basic" label="Company Type" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
-              <TextField id="outlined-basic" label="Company URL" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
-              <TextField id="outlined-basic" label="Service" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
-              <TextField id="outlined-basic" label="Enter Store Description" variant="outlined" sx={{ mt: 3, ml: 6, width: "75ch" }} />
-
-              <Box sx={{ mt: 3, ml: 6, width: "75ch" }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                  <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Age">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </Box>
+           { _renderStepContent(activeStep)}
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
+              <Button
+                color="inherit"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >
                 Back
               </Button>
               <Box sx={{ flex: "1 1 auto" }} />
@@ -122,16 +102,38 @@ export default function HorizontalNonLinearStepper() {
               </Button>
               {activeStep !== steps.length &&
                 (completed.get(activeStep) ? (
-                  <Typography variant="caption" sx={{ display: "inline-block" }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ display: "inline-block" }}
+                  >
                     Step {activeStep + 1} already completed
                   </Typography>
                 ) : (
-                  <Button onClick={handleComplete}>{completedSteps() === totalSteps() - 1 ? "Finish" : "Complete Step"}</Button>
+                  <Button onClick={handleComplete}>
+                    {completedSteps() === totalSteps() - 1
+                      ? "Finish"
+                      : "Complete Step"}
+                  </Button>
                 ))}
             </Box>
           </React.Fragment>
-        )}
+        ) }
       </div>
     </Box>
   );
+}
+
+function _renderStepContent(step: number) {
+  switch (step) {
+    case 0:
+      return <CompanyDetails />;
+    case 1:
+      return <CompanyContactInfo />;
+    case 2:
+      return <CompanyKYC />;
+    case 3:
+      return <VendorListings />;
+    default:
+      <div>Empty Page</div>;
+  }
 }
