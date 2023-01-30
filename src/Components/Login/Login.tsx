@@ -1,4 +1,13 @@
-import { CssBaseline, Box, TextField, Avatar, Button, Container, Grid, Typography } from "@mui/material";
+import {
+  CssBaseline,
+  Box,
+  TextField,
+  Avatar,
+  Button,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
 // import { Avatar, Typography, Grid, Checkbox } from "antd";
 import { useState } from "react";
 import "./login.css";
@@ -6,6 +15,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 // import { ILoginRequest } from "../../models/login-service-model";
 import { signUp, postConfirmSignUp, login } from "../../services/login-service";
 import { useNavigate } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -16,16 +26,21 @@ export const Login = () => {
   const [lastName, setLastName] = useState<string>("");
   const [signUpEmail, setSignUpEmail] = useState<string>("");
   const [signUpPassword, setSignUpPassword] = useState<string>("");
-  const [isVerificationCodeSent, setIsVerificationCodeSent] = useState<Boolean>(false);
+  const [isVerificationCodeSent, setIsVerificationCodeSent] =
+    useState<Boolean>(false);
   const [verificationCode, setVerificationCode] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const userLogin = async () => {
     try {
+      setLoading(true);
       await login(loginEmail, loginPassword);
       console.log("Successfully logged in");
       setIsLogin(true);
       navigate("/dashboard");
+      setLoading(false);
     } catch (e) {
+      setLoading(false)
       setIsLogin(false);
     }
   };
@@ -71,7 +86,16 @@ export const Login = () => {
               <Box component="form" noValidate sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
+                    <TextField
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -87,9 +111,29 @@ export const Login = () => {
                     />
                   </Grid>
                 </Grid>
-                <Button type="button" onClick={userLogin} fullWidth variant="contained" sx={{ mt: 3, mb: 5 }}>
+                <Button
+                  type="button"
+                  onClick={userLogin}
+                  fullWidth
+                  variant="contained"
+                  disabled={loading}
+                  sx={{ mt: 3, mb: 5 }}
+                  
+                >
                   Log In
                 </Button>
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: "-12px",
+                      marginLeft: "-12px",
+                    }}
+                  />
+                )}
                 <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
                   <Grid item>
                     <Button variant="text" onClick={() => setIsLogin(false)}>
@@ -123,10 +167,28 @@ export const Login = () => {
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                        <TextField
+                          required
+                          fullWidth
+                          id="lastName"
+                          label="Last Name"
+                          name="lastName"
+                          autoComplete="family-name"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                        />
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" value={signUpEmail} onChange={(e) => setSignUpEmail(e.target.value)} />
+                        <TextField
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email Address"
+                          name="email"
+                          autoComplete="email"
+                          value={signUpEmail}
+                          onChange={(e) => setSignUpEmail(e.target.value)}
+                        />
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
@@ -142,7 +204,13 @@ export const Login = () => {
                         />
                       </Grid>
                     </Grid>
-                    <Button type="button" onClick={signup} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    <Button
+                      type="button"
+                      onClick={signup}
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2 }}
+                    >
                       Sign Up
                     </Button>
                     <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
@@ -171,7 +239,13 @@ export const Login = () => {
                         />
                       </Grid>
                     </Grid>
-                    <Button type="button" onClick={confirmSignUp} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    <Button
+                      type="button"
+                      onClick={confirmSignUp}
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2 }}
+                    >
                       Confirm Code
                     </Button>
                   </>
