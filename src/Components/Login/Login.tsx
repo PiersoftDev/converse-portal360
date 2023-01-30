@@ -15,7 +15,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 // import { ILoginRequest } from "../../models/login-service-model";
 import { signUp, postConfirmSignUp, login } from "../../services/login-service";
 import { useNavigate } from "react-router-dom";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -40,16 +40,19 @@ export const Login = () => {
       navigate("/dashboard");
       setLoading(false);
     } catch (e) {
-      setLoading(false)
+      setLoading(false);
       setIsLogin(false);
     }
   };
 
   const signup = async () => {
     try {
+      setLoading(true);
       await signUp(signUpEmail, signUpPassword, `${firstName} ${lastName}`);
       setIsVerificationCodeSent(true);
+      setLoading(false);
     } catch (e) {
+      setLoading(false);
       setIsVerificationCodeSent(false);
     }
   };
@@ -118,7 +121,6 @@ export const Login = () => {
                   variant="contained"
                   disabled={loading}
                   sx={{ mt: 3, mb: 5 }}
-                  
                 >
                   Log In
                 </Button>
@@ -213,6 +215,18 @@ export const Login = () => {
                     >
                       Sign Up
                     </Button>
+                    {loading && (
+                      <CircularProgress
+                        size={24}
+                        sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          marginTop: "-12px",
+                          marginLeft: "-12px",
+                        }}
+                      />
+                    )}
                     <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
                       <Grid item>
                         <Button variant="text" onClick={() => setIsLogin(true)}>
