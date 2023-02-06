@@ -45,7 +45,7 @@ export const postConfirmSignUp = async (username: string, code: string) => {
 export const login = async function signIn(username: string, password: string) {
   try {
     const response = await Auth.signIn(username, password);
-    return response.user;
+    return response.signInUserSession;
   } catch (error) {
     console.log("error signing in", error);
   }

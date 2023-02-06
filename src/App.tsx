@@ -6,17 +6,24 @@ import "./common/styles/global.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LandingPage from "./components/landing_page/landing_page";
 import { VendorOnboarding } from "./components/vendor/vendor_onboarding";
+import {createContext, useState, useContext} from "react";
+import { UserContext } from "./components/login/login";
+
+
 
 function App() {
+  const user = useContext(UserContext);
   return (
-    <Routes>
-      {/* Header */}
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<LandingPage />} />
-      <Route path="/vendor-onboarding" element={<VendorOnboarding />} />
-      {/* Footer */}
-    </Routes>
+    <UserContext.Provider value={user}>
+      <Routes>
+        {/* Header */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<LandingPage />} />
+        <Route path="/vendor-onboarding" element={<VendorOnboarding />} />
+        {/* Footer */}
+      </Routes>
+    </UserContext.Provider>
   );
 }
 

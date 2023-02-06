@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 // import { Avatar, Typography, Grid, Checkbox } from "antd";
-import { useState} from "react";
+import { useState } from "react";
 import { createContext } from "react";
 import "./login.css";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -17,10 +17,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { signUp, postConfirmSignUp, login } from "../../services/login-service";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import OtpInput from "../../common/components/otp_input/otp_input";
+import { validateEmail } from "../../services/validation-service";
+
+export let UserContext = createContext(null);
 
 export const Login = () => {
   const navigate = useNavigate();
-  const userContext = createContext(null);
+  const [otp, setOtp] = useState("");
+  const onChange = (value: string) => setOtp(value);
   const [isLogin, setIsLogin] = useState<Boolean>(true);
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
@@ -33,6 +38,8 @@ export const Login = () => {
   const [verificationCode, setVerificationCode] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [isSignUpEmailValid, setIsSignEmailValid] = useState(true);
+  const [emailValidationErrorHelperText , setEmailvalidationErrorHelperText] = useState('');
 
   const userLogin = async () => {
     try {
@@ -42,6 +49,7 @@ export const Login = () => {
       setIsLogin(true);
       navigate("/dashboard");
       setLoading(false);
+      UserContext = createContext(user);
     } catch (e) {
       setLoading(false);
       setIsLogin(false);
@@ -50,6 +58,11 @@ export const Login = () => {
 
   const signup = async () => {
     try {
+      if (!validateEmail(signUpEmail)) {
+        setIsSignEmailValid(false);
+        setEmailvalidationErrorHelperText("Invalid Email")
+        return;
+      }
       setLoading(true);
       await signUp(signUpEmail, signUpPassword, `${firstName} ${lastName}`);
       setIsVerificationCodeSent(true);
@@ -160,6 +173,7 @@ export const Login = () => {
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
                         <TextField
+                          
                           autoComplete="given-name"
                           name="firstName"
                           required
@@ -185,6 +199,7 @@ export const Login = () => {
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
+                          error={!isSignUpEmailValid}
                           required
                           fullWidth
                           id="email"
@@ -193,6 +208,7 @@ export const Login = () => {
                           autoComplete="email"
                           value={signUpEmail}
                           onChange={(e) => setSignUpEmail(e.target.value)}
+                          helperText={emailValidationErrorHelperText}
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -243,28 +259,37 @@ export const Login = () => {
                   <>
                     <Grid container spacing={2} sx={{ mb: 5 }}>
                       <Grid item sm={12}>
-                        <TextField
-                          autoComplete="verification-code"
-                          name="verificationCode"
-                          required
-                          fullWidth
-                          id="verificationCode"
-                          label="Verification Code"
-                          autoFocus
-                          value={verificationCode}
-                          onChange={(e) => setVerificationCode(e.target.value)}
+                        <OtpInput
+                          value={otp}
+                          valueLength={6}
+                          onChange={onChange}
                         />
                       </Grid>
                     </Grid>
-                    <Button
-                      type="button"
-                      onClick={confirmSignUp}
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
+                    <Box
+                      display="flex"
+                      justifyContent="space-evenly"
+                      alignItems="center"
                     >
-                      Confirm Code
-                    </Button>
+                      <Button
+                        type="button"
+                        onClick={() => setOtp("")}
+                        fullWidth
+                        variant="contained"
+                        sx={{ mb: 2 }}
+                      >
+                        Reset
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={confirmSignUp}
+                        fullWidth
+                        variant="contained"
+                        sx={{ mb: 2, ml: 2 }}
+                      >
+                        Confirm Code
+                      </Button>
+                    </Box>
                   </>
                 )}
               </Box>
