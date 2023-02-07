@@ -6,7 +6,6 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { LoginForm } from "./login_form";
 import { SignUpForm } from "./signup_form";
 
-export let UserContext = createContext(null);
 
 export const Login = () => {
   const [showLogin, setShowLogin] = useState<Boolean>(true);

@@ -1,14 +1,13 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { InputLabel, Select, MenuItem, FormControl } from "@mui/material/";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepButton from "@mui/material/StepButton";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { useForm } from "react-hook-form";
+
 import TextField from "@mui/material/TextField";
 
 export const CompanyDetails = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
   return (
     <React.Fragment>
       <Box
@@ -25,13 +24,15 @@ export const CompanyDetails = () => {
           id="outlined-basic"
           label="Company Name"
           variant="outlined"
-          
+          required
           sx={{ mt: 3, ml: 6, width: "75ch" }}
+          {...register("companyName")}
         />
         <TextField
           id="outlined-basic"
           label="Company Type"
           variant="outlined"
+          required
           sx={{ mt: 3, ml: 6, width: "75ch" }}
         />
         <TextField
@@ -44,12 +45,14 @@ export const CompanyDetails = () => {
           id="outlined-basic"
           label="Service"
           variant="outlined"
+          required
           sx={{ mt: 3, ml: 6, width: "75ch" }}
         />
         <TextField
           id="outlined-basic"
           label="Enter Store Description"
           variant="outlined"
+          required
           sx={{ mt: 3, ml: 6, width: "75ch" }}
         />
 

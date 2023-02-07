@@ -21,6 +21,7 @@ export const CompanyContactInfo = () => {
               id="outlined-basic"
               label="Company Address"
               variant="outlined"
+              required
               sx={{ mt: 3, ml: 6, width: "75ch" }}
               
             />
@@ -28,6 +29,7 @@ export const CompanyContactInfo = () => {
               id="outlined-basic"
               label="Company Email"
               variant="outlined"
+              required
               sx={{ mt: 3, ml: 6, width: "75ch" }}
               InputProps={{endAdornment: <Button variant="contained">Verify</Button>}}
             />
@@ -35,6 +37,7 @@ export const CompanyContactInfo = () => {
               id="outlined-basic"
               label="Company Mobile No"
               variant="outlined"
+              required
               sx={{ mt: 3, ml: 6, width: "75ch" }}
               InputProps={{endAdornment: <Button variant="contained">verify</Button>}}
             />

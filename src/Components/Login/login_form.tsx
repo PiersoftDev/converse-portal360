@@ -7,11 +7,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useState } from "react";
-import { signUp, login } from "../../services/login-service";
+import { login } from "../../services/login-service";
 import { useNavigate } from "react-router-dom";
 import { createContext } from "react";
-import { SignUpForm } from "./signup_form";
-import { type } from "os";
+import { validateEmail } from "../../services/validation-service";
 
 export let UserContext = createContext(null);
 
@@ -19,25 +18,29 @@ export type Props = {
   onChange: (value: boolean) => void;
 };
 
-export const LoginForm = ({onChange}: Props) => {
+export const LoginForm = ({ onChange }: Props) => {
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const [isLogin, setIsLogin] = useState<Boolean>(true);
+  const [isSignUpEmailValid, setIsSignEmailValid] = useState(true);
+  const [emailValidationErrorHelperText, setEmailvalidationErrorHelperText] =
+    useState("");
   const navigate = useNavigate();
 
   const userLogin = async () => {
     try {
+      if (!validateEmail(loginEmail)) {
+        setIsSignEmailValid(false);
+        setEmailvalidationErrorHelperText("Invalid Email");
+        return;
+      }
       setLoading(true);
       const user = await login(loginEmail, loginPassword);
-      console.log("Successfully logged in");
-      setIsLogin(true);
       navigate("/dashboard");
       setLoading(false);
       UserContext = createContext(user);
     } catch (e) {
       setLoading(false);
-      setIsLogin(false);
     }
   };
 
@@ -50,6 +53,8 @@ export const LoginForm = ({onChange}: Props) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
+              error={!isSignUpEmailValid}
+              helperText={emailValidationErrorHelperText}
               required
               fullWidth
               id="email"
@@ -97,12 +102,12 @@ export const LoginForm = ({onChange}: Props) => {
           />
         )}
         <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
-            <Grid item>
-              <Button variant="text" onClick={() => onChange(false)}>
-                New? Create Account
-              </Button>
-            </Grid>
+          <Grid item>
+            <Button variant="text" onClick={() => onChange(false)}>
+              New? Create Account
+            </Button>
           </Grid>
+        </Grid>
       </Box>
     </>
   );

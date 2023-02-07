@@ -22,15 +22,15 @@ export const CompanyKYC = () => {
         autoComplete="off"
         display="flex"
         flexDirection="column"
-        justifyContent="space-evenly"
+        justifyContent="center"
       >
-        <Button variant="contained" sx={{ width: "50%", mt: 2 }}>
+        <Button variant="contained" sx={{ width: "15%", mt: 2 }} endIcon = {<UploadFileIcon />}>
           Upload GST Certificate
         </Button>
-        <Button variant="contained" sx={{ width: "50%", mt: 2 }}>
+        <Button variant="contained" sx={{ width: "15%", mt: 2 }}  endIcon = {<UploadFileIcon />}>
           Upload Aadhar Details
         </Button>
-        <Button variant="contained" sx={{ width: "50%", mt: 2 }}>
+        <Button variant="contained" sx={{ width: "15%", mt: 2 }}  endIcon = {<UploadFileIcon />}>
           Upload Cancelled Cheque
         </Button>
       </Box>

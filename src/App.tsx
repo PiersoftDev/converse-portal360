@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import LandingPage from "./components/landing_page/landing_page";
 import { VendorOnboarding } from "./components/vendor/vendor_onboarding";
 import {createContext, useState, useContext} from "react";
-import { UserContext } from "./components/login/login";
+import { UserContext } from "./components/login/login_form";
 
 
 
