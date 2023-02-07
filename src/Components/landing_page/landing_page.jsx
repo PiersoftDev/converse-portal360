@@ -5,7 +5,7 @@ import { Sidebar } from "../../common/components/side_bar/side_bar";
 import { useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-import { Login, UserContext } from "../login/login";
+import {  UserContext } from "../login/login_form";
 import { Home } from "../home/home";
 
 function LandingPage() {
