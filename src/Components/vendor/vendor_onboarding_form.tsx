@@ -67,7 +67,7 @@ export default function HorizontalNonLinearStepper() {
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
           <Step key={label} completed={completed.get(index)}>
-            <StepButton color="inherit" onClick={handleStep(index)}>
+            <StepButton color="inherit" >
               {label}
             </StepButton>
           </Step>
@@ -98,7 +98,7 @@ export default function HorizontalNonLinearStepper() {
               </Button>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleNext} sx={{ mr: 1 }}>
-                Next
+                Save
               </Button>
               {activeStep !== steps.length &&
                 (completed.get(activeStep) ? (
