@@ -1,12 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import {
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  Button,
-} from "@mui/material/";
+import { InputLabel, Select, MenuItem, FormControl, Button } from "@mui/material/";
 import TextField from "@mui/material/TextField";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
@@ -23,14 +17,15 @@ export const CompanyKYC = () => {
         display="flex"
         flexDirection="column"
         justifyContent="center"
+        alignItems="center"
       >
-        <Button variant="contained" sx={{ width: "15%", mt: 2 }} endIcon = {<UploadFileIcon />}>
+        <Button variant="contained" sx={{ width: "15%", mt: 2 }} endIcon={<UploadFileIcon />}>
           Upload GST Certificate
         </Button>
-        <Button variant="contained" sx={{ width: "15%", mt: 2 }}  endIcon = {<UploadFileIcon />}>
+        <Button variant="contained" sx={{ width: "15%", mt: 2 }} endIcon={<UploadFileIcon />}>
           Upload Aadhar Details
         </Button>
-        <Button variant="contained" sx={{ width: "15%", mt: 2 }}  endIcon = {<UploadFileIcon />}>
+        <Button variant="contained" sx={{ width: "15%", mt: 2 }} endIcon={<UploadFileIcon />}>
           Upload Cancelled Cheque
         </Button>
       </Box>
