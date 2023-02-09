@@ -2,6 +2,8 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
+import { postVendorCompanyInformation } from "../../services/vendor-onboarding-service";
+import { IVendor } from "../../models/vendor-onboarding-service-model";
 
 export const CompanyDetails = () => {
   const [companyName, setCompanyName] = useState("");
@@ -17,6 +19,7 @@ export const CompanyDetails = () => {
   const [invalidServiceValidationMsg, setInvalidServiceValidationMsg] = useState("");
 
   const [companyProfile, setCompanyProfile] = useState("");
+  const [websiteURL, setWebsiteURL] = useState("");
 
   const validateCompanyName = () => {
     console.log({ companyName });
@@ -48,6 +51,24 @@ export const CompanyDetails = () => {
     } else {
       setIsValidService(true);
       setInvalidServiceValidationMsg("");
+    }
+  };
+
+  const onSubmit = () => {
+    const vendor: IVendor = {
+      id: "",
+      companyDetails: {
+        name: companyName,
+        profile: companyProfile,
+        type: companyType,
+        service,
+        websiteURL,
+      },
+    };
+    try {
+      postVendorCompanyInformation(vendor);
+    } catch (ex) {
+      console.log({ ex });
     }
   };
 
@@ -95,7 +116,7 @@ export const CompanyDetails = () => {
           onBlur={validateService}
           helperText={invalidServiceValidationMsg}
         />
-        <TextField id="outlined-basic" label="Company website" variant="outlined" sx={{ mt: 3, width: "75ch" }} />
+        <TextField id="outlined-basic" label="Company website" variant="outlined" sx={{ mt: 3, width: "75ch" }} onChange={(e) => setWebsiteURL(e.target.value)} />
         <TextField id="outlined-basic" label="Company Profile" required variant="outlined" sx={{ mt: 3, width: "75ch" }} onChange={(e) => setCompanyProfile(e.target.value)} multiline minRows={2} />
       </Box>
     </React.Fragment>
