@@ -10,10 +10,7 @@ export type Props = {
 export default function OtpInput({ value, valueLength, onChange }: Props) {
   const RE_DIGIT = new RegExp(/^\d+$/);
 
-  const inputOnChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    idx: number
-  ) => {
+  const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
     const target = e.target;
     const targetValue = target.value;
 
@@ -21,13 +18,11 @@ export default function OtpInput({ value, valueLength, onChange }: Props) {
       return;
     }
 
-    const newValue =
-      value.substring(0, idx) + targetValue + value.substring(idx + 1);
+    const newValue = value.substring(0, idx) + targetValue + value.substring(idx + 1);
 
     onChange(newValue);
-    
-    const nextElementSibling =
-      target.nextElementSibling as HTMLInputElement | null;
+
+    const nextElementSibling = target.nextElementSibling as HTMLInputElement | null;
 
     if (nextElementSibling) {
       nextElementSibling.focus();
@@ -49,6 +44,7 @@ export default function OtpInput({ value, valueLength, onChange }: Props) {
     }
 
     return items;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, valueLength]);
 
   return (

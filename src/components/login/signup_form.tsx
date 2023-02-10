@@ -1,11 +1,4 @@
-import {
-  Box,
-  TextField,
-  Button,
-  Grid,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { Box, TextField, Button, Grid, Typography, CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { VerifyOTP } from "./otp_verification";
 import { validateEmail } from "../../services/validation-service";
@@ -20,13 +13,10 @@ export const SignUpForm = ({ onChange }: Props) => {
   const [lastName, setLastName] = useState<string>("");
   const [signUpEmail, setSignUpEmail] = useState<string>("");
   const [signUpPassword, setSignUpPassword] = useState<string>("");
-  const [isVerificationCodeSent, setIsVerificationCodeSent] =
-    useState<Boolean>(false);
+  const [isVerificationCodeSent, setIsVerificationCodeSent] = useState<Boolean>(false);
   const [loading, setLoading] = useState(false);
   const [isSignUpEmailValid, setIsSignEmailValid] = useState(true);
-  const [emailValidationErrorHelperText, setEmailvalidationErrorHelperText] =
-    useState("");
-  const [isLogin, setIsLogin] = useState<Boolean>(true);
+  const [emailValidationErrorHelperText, setEmailvalidationErrorHelperText] = useState("");
 
   const signup = async () => {
     try {
@@ -54,29 +44,10 @@ export const SignUpForm = ({ onChange }: Props) => {
           <>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
+                <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="First Name" autoFocus value={firstName} onChange={(e) => setFirstName(e.target.value)} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
+                <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -106,13 +77,7 @@ export const SignUpForm = ({ onChange }: Props) => {
                 />
               </Grid>
             </Grid>
-            <Button
-              type="button"
-              onClick={signup}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="button" onClick={signup} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
             {loading && (

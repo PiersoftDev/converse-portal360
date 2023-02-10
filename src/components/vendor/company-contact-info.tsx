@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { InputLabel, Select, MenuItem, FormControl, Button } from "@mui/material/";
+import { Button } from "@mui/material/";
 import TextField from "@mui/material/TextField";
 
 export const CompanyContactInfo = () => {

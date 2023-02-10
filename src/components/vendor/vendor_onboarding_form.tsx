@@ -9,12 +9,34 @@ import { CompanyDetails } from "./company-details";
 import { CompanyContactInfo } from "./company-contact-info";
 import { VendorListings } from "./vendor-listings";
 import { CompanyKYC } from "./company-kyc";
+import { useReducer } from "react";
+import { IVendor } from "../../models/vendor-onboarding-service-model";
+import { VendorContext, UpdateVendorContext } from "../../context-config";
+import { postVendorCompanyInformation } from "../../services/vendor-onboarding-service";
 
 const steps = ["Company Details", "Contact Information", "KYC", "Listings"];
+
+const initialVendorDetails: IVendor = {
+  id: "",
+  companyDetails: {
+    name: "",
+    profile: "",
+    service: "",
+    type: "",
+    websiteURL: "",
+  },
+};
 
 export default function HorizontalNonLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState(new Map());
+
+  const vendorDetailsReducer = (prev: IVendor, next: IVendor): IVendor => {
+    return { ...prev, ...next };
+  };
+
+  // TODO : INITIAL VENDOR DETAILS SHOULD BE FETCHED FROM API, IF THE VENDOR IS NEW, WE SET VALUES TO DEFAULT AS DEFINED ABOVE I.E., INITIAL VENDOR DETAILS.
+  const [vendorDetails, updateVendorDetails] = useReducer(vendorDetailsReducer, initialVendorDetails);
 
   const totalSteps = () => {
     return steps.length;
@@ -33,6 +55,18 @@ export default function HorizontalNonLinearStepper() {
   };
 
   const handleNext = () => {
+    // Will replace this with switch case.
+    if (activeStep === 0) {
+      const vendor: IVendor = {
+        id: "",
+        companyDetails: vendorDetails.companyDetails,
+      };
+      try {
+        postVendorCompanyInformation(vendor);
+      } catch (ex) {
+        console.log({ ex });
+      }
+    }
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
@@ -46,9 +80,9 @@ export default function HorizontalNonLinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleStep = (step: number) => () => {
-    setActiveStep(step);
-  };
+  // const handleStep = (step: number) => () => {
+  //   setActiveStep(step);
+  // };
 
   const handleComplete = () => {
     const newCompleted = { ...completed };
@@ -60,6 +94,21 @@ export default function HorizontalNonLinearStepper() {
   const handleReset = () => {
     setActiveStep(0);
     setCompleted(new Map());
+  };
+
+  const _renderStepContent = (step: number) => {
+    switch (step) {
+      case 0:
+        return <CompanyDetails />;
+      case 1:
+        return <CompanyContactInfo />;
+      case 2:
+        return <CompanyKYC />;
+      case 3:
+        return <VendorListings />;
+      default:
+        <div>Empty Page</div>;
+    }
   };
 
   return (
@@ -82,7 +131,9 @@ export default function HorizontalNonLinearStepper() {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            {_renderStepContent(activeStep)}
+            <VendorContext.Provider value={vendorDetails}>
+              <UpdateVendorContext.Provider value={updateVendorDetails}>{_renderStepContent(activeStep)}</UpdateVendorContext.Provider>
+            </VendorContext.Provider>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2, mt: 4, ml: "auto", mr: "auto", width: "75ch", justifyContent: "center" }}>
               <Button variant="contained" color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
                 Back
@@ -108,19 +159,4 @@ export default function HorizontalNonLinearStepper() {
       </div>
     </Box>
   );
-}
-
-function _renderStepContent(step: number) {
-  switch (step) {
-    case 0:
-      return <CompanyDetails />;
-    case 1:
-      return <CompanyContactInfo />;
-    case 2:
-      return <CompanyKYC />;
-    case 3:
-      return <VendorListings />;
-    default:
-      <div>Empty Page</div>;
-  }
 }
