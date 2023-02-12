@@ -1,9 +1,9 @@
 export interface IVendor {
   id: string;
+  vendorId: string;
   companyDetails?: ICompanyDetails;
   contactInformation?: IContactInformation;
   kyc?: IKyc;
-  bankDetails?: IBankDetails;
 }
 
 export interface ICompanyDetails {
@@ -22,15 +22,17 @@ export interface IContactInformation {
   postalCode: string;
   country: string;
   email: string;
-  isEmailVerified: boolean;
-  phoneNumber: string;
+  emailVerified: boolean;
+  phoneNo: string;
+  phoneNoVerified: boolean;
+
 }
 
 export interface IKyc {
   gstNumber: string;
-  isGSTVerified: boolean;
+  gstVerified: boolean;
   aadhaarNumber: string;
-  isAadhaarVerified: boolean;
+  aadhaarVerified: boolean;
   bankDetails?: IBankDetails;
 }
 
@@ -38,5 +40,5 @@ export interface IBankDetails {
   accountNumber: string;
   branch: string;
   ifscCode: string;
-  isVerified: boolean;
+  accountVerified: boolean;
 }

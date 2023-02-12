@@ -1,9 +1,27 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material/";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
+import TextField from "@mui/material/TextField";
+import { useContext } from "react";
+import { VendorContext, UpdateVendorContext } from "../../context-config";
+import { debounce } from "../../common/helpers/debounce";
 
 export const CompanyKYC = () => {
+  const vendorDetails = useContext(VendorContext);
+  const updateVendorDetails = useContext(UpdateVendorContext);
+
+  let { gstNumber, gstVerified, aadhaarNumber, aadhaarVerified } =
+    vendorDetails?.kyc;
+
+  const setValue = debounce((e: any) => {
+    const { name: key, value } = e.target;
+    const kyc = { ...vendorDetails.kyc };
+    kyc[key] = value;
+    updateVendorDetails({
+      kyc: kyc,
+    });
+  });
+
   return (
     <React.Fragment>
       <Box
@@ -13,20 +31,41 @@ export const CompanyKYC = () => {
         }}
         noValidate
         autoComplete="off"
-        display="flex"
-        flexDirection="column"
+        display="grid"
         justifyContent="center"
-        alignItems="center"
       >
-        <Button variant="contained" sx={{ width: "15%", mt: 2 }} endIcon={<UploadFileIcon />}>
-          Upload GST Certificate
-        </Button>
-        <Button variant="contained" sx={{ width: "15%", mt: 2 }} endIcon={<UploadFileIcon />}>
-          Upload Aadhar Details
-        </Button>
-        <Button variant="contained" sx={{ width: "15%", mt: 2 }} endIcon={<UploadFileIcon />}>
-          Upload Cancelled Cheque
-        </Button>
+        <TextField
+          id="outlined-basic"
+          label="GST Number"
+          variant="outlined"
+          name="gstNumber"
+          required
+          defaultValue={gstNumber}
+          sx={{ mt: 3, width: "75ch" }}
+          onChange={setValue}
+          error={!gstNumber?.length}
+          helperText={!gstNumber?.length ? "GSTIN cannot be empty" : ""}
+          InputProps={{
+            endAdornment: <Button variant="contained">Verify</Button>,
+          }}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Company Phone Number"
+          variant="outlined"
+          name="aadhaarNumber"
+          required
+          defaultValue={aadhaarNumber}
+          sx={{ mt: 3, width: "75ch" }}
+          onChange={setValue}
+          error={!aadhaarNumber?.length}
+          helperText={
+            !aadhaarNumber?.length ? "Aadhaar number cannot be empty" : ""
+          }
+          InputProps={{
+            endAdornment: <Button variant="contained">Verify</Button>,
+          }}
+        />        
       </Box>
     </React.Fragment>
   );
