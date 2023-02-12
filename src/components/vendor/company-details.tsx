@@ -1,20 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useContext } from "react";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
+import { debounce } from "../../common/helpers/debounce";
 
 export const CompanyDetails = () => {
   const vendorDetails = useContext(VendorContext);
   const updateVendorDetails = useContext(UpdateVendorContext);
 
-  const setValue = (key: string, value: string) => {
-    const newCompanyDetails: any = { ...vendorDetails.companyDetails };
+  let { name, type, service, websiteURL, profile } = vendorDetails?.companyDetails;
+
+  const setValue = debounce((e: any) => {
+    const { name: key, value } = e.target;
+    const newCompanyDetails = { ...vendorDetails.companyDetails };
     newCompanyDetails[key] = value;
     updateVendorDetails({
       companyDetails: newCompanyDetails,
     });
-  };
+  });
 
   return (
     <React.Fragment>
@@ -33,50 +38,46 @@ export const CompanyDetails = () => {
           variant="outlined"
           name="name"
           required
+          defaultValue={name}
           sx={{ mt: 3, width: "75ch" }}
-          value={vendorDetails.companyDetails?.name}
-          onChange={(e) => setValue("name", e.target.value)}
-          error={!vendorDetails.companyDetails?.name.length}
-          helperText={!vendorDetails.companyDetails?.name.length ? "Company name cannot be empty" : ""}
+          onChange={setValue}
+          error={!name?.length}
+          helperText={!name?.length ? "Company name cannot be empty" : ""}
         />
         <TextField
           id="outlined-basic"
           label="Company Type"
           variant="outlined"
           required
-          value={vendorDetails.companyDetails?.type}
+          defaultValue={type}
+          name="type"
           sx={{ mt: 3, width: "75ch" }}
-          onChange={(e) => setValue("type", e.target.value)}
-          error={!vendorDetails.companyDetails?.type}
-          helperText={!vendorDetails.companyDetails?.type ? "Company type cannot be empty" : ""}
+          onChange={setValue}
+          error={!type?.length}
+          helperText={!type ? "Company type cannot be empty" : ""}
         />
         <TextField
           id="outlined-basic"
           label="Service"
           variant="outlined"
           required
-          value={vendorDetails.companyDetails?.service}
+          defaultValue={service}
+          name="service"
           sx={{ mt: 3, width: "75ch" }}
-          onChange={(e) => setValue("service", e.target.value)}
-          error={!vendorDetails.companyDetails?.service}
-          helperText={!vendorDetails.companyDetails?.service ? "Company service details cannot be empty" : ""}
+          onChange={setValue}
+          error={!service?.length}
+          helperText={!service ? "Company service details cannot be empty" : ""}
         />
-        <TextField
-          id="outlined-basic"
-          label="Company website"
-          variant="outlined"
-          value={vendorDetails.companyDetails?.websiteURL}
-          sx={{ mt: 3, width: "75ch" }}
-          onChange={(e) => setValue("websiteURL", e.target.value)}
-        />
+        <TextField id="outlined-basic" label="Company website" variant="outlined" defaultValue={websiteURL} sx={{ mt: 3, width: "75ch" }} name="websiteURL" onChange={setValue} />
         <TextField
           id="outlined-basic"
           label="Company Profile"
           required
-          value={vendorDetails.companyDetails?.profile}
+          name="profile"
+          defaultValue={profile}
           variant="outlined"
           sx={{ mt: 3, width: "75ch" }}
-          onChange={(e) => setValue("profile", e.target.value)}
+          onChange={setValue}
           multiline
           minRows={2}
         />
