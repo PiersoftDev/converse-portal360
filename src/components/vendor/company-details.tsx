@@ -12,6 +12,7 @@ export const CompanyDetails = forwardRef((props: any, ref: any) => {
   const vendorDetails = useContext(VendorContext);
   const updateVendorDetails = useContext(UpdateVendorContext);
   const errorMap = useRef<Map<string, boolean>>(new Map());
+  
 
   const { name, type, service, websiteURL, profile } = vendorDetails?.companyDetails;
 
@@ -26,12 +27,11 @@ export const CompanyDetails = forwardRef((props: any, ref: any) => {
   useImperativeHandle(ref, () => ({
     async onSubmit() {
       const vendor: IVendor = {
-        id: "NEED_TO_REPLACE",
         vendorId: "51bc368c-33c8-4386-8460-44f21ff75161",
         companyDetails: vendorDetails.companyDetails,
       };
       try {
-        postVendorCompanyInformation(vendor, null);
+        postVendorCompanyInformation(vendor, props.setId);
       } catch (ex) {
         console.log({ ex });
       }

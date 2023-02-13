@@ -24,7 +24,7 @@ export const CompanyKYC = forwardRef((props: any, ref: any) => {
   useImperativeHandle(ref, () => ({
     async onSubmit() {
       const vendor: IVendor = {
-        id: "NEED_TO_REPLACE",
+        id: props.id,
         vendorId: "51bc368c-33c8-4386-8460-44f21ff75161",
         kyc: vendorDetails.kyc,
       };

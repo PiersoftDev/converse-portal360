@@ -16,7 +16,7 @@ export const VerifyOTP = ({signUpEmail}: Props) => {
   const confirmSignUp = async () => {
     try {
       await postConfirmSignUp(signUpEmail, otp);
-      navigate("/");
+      navigate("/vendor-onboarding");
     } catch (e) {
       // show error message
     }

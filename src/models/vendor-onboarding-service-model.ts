@@ -1,5 +1,5 @@
 export interface IVendor {
-  id: string;
+  id?: string;
   vendorId: string;
   companyDetails?: ICompanyDetails;
   contactInformation?: IContactInformation;
