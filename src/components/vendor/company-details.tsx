@@ -2,23 +2,52 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useContext } from "react";
+import { forwardRef, useContext, useRef, useImperativeHandle } from "react";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
 import { debounce } from "../../common/helpers/debounce";
+import { IVendor } from "../../models/vendor-onboarding-service-model";
+import { postVendorCompanyInformation } from "../../services/vendor-onboarding-service";
 
-export const CompanyDetails = () => {
+export const CompanyDetails = forwardRef((props: any, ref: any) => {
   const vendorDetails = useContext(VendorContext);
   const updateVendorDetails = useContext(UpdateVendorContext);
+  const errorMap = useRef<Map<string, boolean>>(new Map());
 
   let { name, type, service, websiteURL, profile } = vendorDetails?.companyDetails;
+
+  useImperativeHandle(ref, () => ({
+    async onSubmit() {
+      const vendor: IVendor = {
+        id: "NEED_TO_REPLACE",
+        vendorId: "51bc368c-33c8-4386-8460-44f21ff75161",
+        companyDetails: vendorDetails.companyDetails,
+      };
+      try {
+        postVendorCompanyInformation(vendor, null);
+      } catch (ex) {
+        console.log({ ex });
+      }
+    },
+  }));
 
   const setValue = debounce((e: any) => {
     const { name: key, value } = e.target;
     const newCompanyDetails = { ...vendorDetails.companyDetails };
-    newCompanyDetails[key] = value;
+    newCompanyDetails[key] = value.trim();
+
+    // Updating the context to make the vendor details available across the components.
     updateVendorDetails({
       companyDetails: newCompanyDetails,
     });
+
+    // Updating the error map to validate the fields.
+    errorMap.current.set(`${key}Error`, value?.trim().length === 0);
+
+    // Enable the save button only after the required data is filled.
+    const map = errorMap.current;
+    const { name: newName, type: newType, service: newService } = newCompanyDetails;
+    const isValid = !map.get("nameError") && newName.length > 0 && !map.get("serviceError") && newService.length > 0 && !map.get("typeError") && newType.length > 0;
+    props.setIsValid(isValid);
   });
 
   return (
@@ -41,8 +70,8 @@ export const CompanyDetails = () => {
           defaultValue={name}
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
-          error={!name?.length}
-          helperText={!name?.length ? "Company name cannot be empty" : ""}
+          error={errorMap.current.get("nameError")}
+          helperText={errorMap.current.get("nameError") ? "Company name cannot be empty" : ""}
         />
         <TextField
           id="outlined-basic"
@@ -53,8 +82,8 @@ export const CompanyDetails = () => {
           name="type"
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
-          error={!type?.length}
-          helperText={!type ? "Company type cannot be empty" : ""}
+          error={errorMap.current.get("typeError")}
+          helperText={errorMap.current.get("typeError") ? "Company type cannot be empty" : ""}
         />
         <TextField
           id="outlined-basic"
@@ -65,8 +94,8 @@ export const CompanyDetails = () => {
           name="service"
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
-          error={!service?.length}
-          helperText={!service ? "Company service details cannot be empty" : ""}
+          error={errorMap.current.get("serviceError")}
+          helperText={errorMap.current.get("serviceError") ? "Company service details cannot be empty" : ""}
         />
         <TextField id="outlined-basic" label="Company website" variant="outlined" defaultValue={websiteURL} sx={{ mt: 3, width: "75ch" }} name="websiteURL" onChange={setValue} />
         <TextField
@@ -84,4 +113,4 @@ export const CompanyDetails = () => {
       </Box>
     </React.Fragment>
   );
-};
+});

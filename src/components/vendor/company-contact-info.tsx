@@ -10,18 +10,7 @@ export const CompanyContactInfo = () => {
   const vendorDetails = useContext(VendorContext);
   const updateVendorDetails = useContext(UpdateVendorContext);
 
-  let {
-    addressLine1,
-    addressLine2,
-    city,
-    state,
-    postalCode,
-    country,
-    email,
-    emailVerified,
-    phoneNo,
-    phoneNoVerified,
-  } = vendorDetails?.contactInformation;
+  let { addressLine1, addressLine2, city, state, postalCode, country, email, phoneNo } = vendorDetails?.contactInformation;
 
   const setValue = debounce((e: any) => {
     const { name: key, value } = e.target;
@@ -69,9 +58,7 @@ export const CompanyContactInfo = () => {
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
           error={!phoneNo?.length}
-          helperText={
-            !phoneNo?.length ? "Company Phone Number cannot be empty" : ""
-          }
+          helperText={!phoneNo?.length ? "Company Phone Number cannot be empty" : ""}
           InputProps={{
             endAdornment: <Button variant="contained">Verify</Button>,
           }}
@@ -86,11 +73,7 @@ export const CompanyContactInfo = () => {
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
           error={!addressLine1?.length}
-          helperText={
-            !addressLine1?.length
-              ? "Company Address Line 1 cannot be empty"
-              : ""
-          }
+          helperText={!addressLine1?.length ? "Company Address Line 1 cannot be empty" : ""}
         />
         <TextField
           id="outlined-basic"
@@ -102,11 +85,7 @@ export const CompanyContactInfo = () => {
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
           error={!addressLine2?.length}
-          helperText={
-            !addressLine2?.length
-              ? "Company Address Line 2 cannot be empty"
-              : ""
-          }
+          helperText={!addressLine2?.length ? "Company Address Line 2 cannot be empty" : ""}
         />
         <Box display="flex" flexDirection={"row"}>
           <TextField
@@ -136,31 +115,31 @@ export const CompanyContactInfo = () => {
           />
         </Box>
         <Box display="flex" flexDirection={"row"}>
-        <TextField
-          id="outlined-basic"
-          label="state"
-          variant="outlined"
-          name="state"
-          required
-          defaultValue={state}
-          sx={{  mt: 3, width: "35ch" }}
-          onChange={setValue}
-          error={!state?.length}
-          helperText={!state?.length ? "State cannot be empty" : ""}
-        />
+          <TextField
+            id="outlined-basic"
+            label="state"
+            variant="outlined"
+            name="state"
+            required
+            defaultValue={state}
+            sx={{ mt: 3, width: "35ch" }}
+            onChange={setValue}
+            error={!state?.length}
+            helperText={!state?.length ? "State cannot be empty" : ""}
+          />
 
-        <TextField
-          id="outlined-basic"
-          label="country"
-          variant="outlined"
-          name="country"
-          required
-          defaultValue={country}
-          sx={{ mt: 3, ml:5, width: "35ch" }}
-          onChange={setValue}
-          error={!country?.length}
-          helperText={!country?.length ? "Country cannot be empty" : ""}
-        />
+          <TextField
+            id="outlined-basic"
+            label="country"
+            variant="outlined"
+            name="country"
+            required
+            defaultValue={country}
+            sx={{ mt: 3, ml: 5, width: "35ch" }}
+            onChange={setValue}
+            error={!country?.length}
+            helperText={!country?.length ? "Country cannot be empty" : ""}
+          />
         </Box>
       </Box>
     </React.Fragment>

@@ -10,8 +10,7 @@ export const CompanyKYC = () => {
   const vendorDetails = useContext(VendorContext);
   const updateVendorDetails = useContext(UpdateVendorContext);
 
-  let { gstNumber, gstVerified, aadhaarNumber, aadhaarVerified } =
-    vendorDetails?.kyc;
+  let { gstNumber, aadhaarNumber } = vendorDetails?.kyc;
 
   const setValue = debounce((e: any) => {
     const { name: key, value } = e.target;
@@ -59,13 +58,11 @@ export const CompanyKYC = () => {
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
           error={!aadhaarNumber?.length}
-          helperText={
-            !aadhaarNumber?.length ? "Aadhaar number cannot be empty" : ""
-          }
+          helperText={!aadhaarNumber?.length ? "Aadhaar number cannot be empty" : ""}
           InputProps={{
             endAdornment: <Button variant="contained">Verify</Button>,
           }}
-        />        
+        />
       </Box>
     </React.Fragment>
   );

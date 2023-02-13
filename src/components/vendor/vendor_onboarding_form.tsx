@@ -9,11 +9,10 @@ import { CompanyDetails } from "./company-details";
 import { CompanyContactInfo } from "./company-contact-info";
 import { VendorListings } from "./vendor-listings";
 import { CompanyKYC } from "./company-kyc";
-import { useReducer } from "react";
+import { useReducer, useRef } from "react";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
-import { postVendorCompanyInformation, updateCompanyContactInformation, updateCompanyDetails, updateCompanyKYC } from "../../services/vendor-onboarding-service";
-import { StringGradients } from "antd/es/progress/progress";
+import { updateCompanyContactInformation, updateCompanyKYC } from "../../services/vendor-onboarding-service";
 
 const steps = ["Company Details", "Contact Information", "KYC", "Listings"];
 
@@ -56,20 +55,21 @@ const initialVendorDetails: IVendor = {
 export default function HorizontalNonLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState(new Map());
+  const [isValid, setIsValid] = React.useState<boolean>(false);
   const [id, setId] = React.useState("");
-  const [vendorId, setVendorId] = React.useState(
-    "51bc368c-33c8-4386-8460-44f21ff75161"
-  );
+
+  const companyDetailsRef = useRef<any>();
+
+  // const [vendorId, setVendorId] = React.useState(
+  //   "51bc368c-33c8-4386-8460-44f21ff75161"
+  // );
 
   const vendorDetailsReducer = (prev: IVendor, next: IVendor): IVendor => {
     return { ...prev, ...next };
   };
 
   // TODO : INITIAL VENDOR DETAILS SHOULD BE FETCHED FROM API, IF THE VENDOR IS NEW, WE SET VALUES TO DEFAULT AS DEFINED ABOVE I.E., INITIAL VENDOR DETAILS.
-  const [vendorDetails, updateVendorDetails] = useReducer(
-    vendorDetailsReducer,
-    initialVendorDetails
-  );
+  const [vendorDetails, updateVendorDetails] = useReducer(vendorDetailsReducer, initialVendorDetails);
 
   const totalSteps = () => {
     return steps.length;
@@ -87,19 +87,13 @@ export default function HorizontalNonLinearStepper() {
     return completedSteps() === totalSteps();
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     // Will replace this with switch case.
-    let docId: String;
+    // let docId: String;
     if (activeStep === 0) {
-      const vendor: IVendor = {
-        id: id,
-        vendorId: "51bc368c-33c8-4386-8460-44f21ff75161",
-        companyDetails: vendorDetails.companyDetails,
-      };
-      try {
-        postVendorCompanyInformation(vendor, setId);
-      } catch (ex) {
-        console.log({ ex });
+      if (companyDetailsRef.current) {
+        await companyDetailsRef.current.onSubmit();
+        // TODO : GOTO NEXT STEP ONLY WHEN THIS CALL IS SUCCESSFUL.
       }
     } else if (activeStep === 1) {
       const vendor: IVendor = {
@@ -156,7 +150,7 @@ export default function HorizontalNonLinearStepper() {
   const _renderStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <CompanyDetails />;
+        return <CompanyDetails setIsValid={setIsValid} ref={companyDetailsRef} />;
       case 1:
         return <CompanyContactInfo />;
       case 2:
@@ -180,9 +174,7 @@ export default function HorizontalNonLinearStepper() {
       <div>
         {allStepsCompleted() ? (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
-            </Typography>
+            <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleReset}>Reset</Button>
@@ -191,9 +183,7 @@ export default function HorizontalNonLinearStepper() {
         ) : (
           <React.Fragment>
             <VendorContext.Provider value={vendorDetails}>
-              <UpdateVendorContext.Provider value={updateVendorDetails}>
-                {_renderStepContent(activeStep)}
-              </UpdateVendorContext.Provider>
+              <UpdateVendorContext.Provider value={updateVendorDetails}>{_renderStepContent(activeStep)}</UpdateVendorContext.Provider>
             </VendorContext.Provider>
             <Box
               sx={{
@@ -207,13 +197,7 @@ export default function HorizontalNonLinearStepper() {
                 justifyContent: "center",
               }}
             >
-              <Button
-                variant="contained"
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
+              <Button variant="contained" color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
                 Back
               </Button>
               <Box sx={{ flex: "1 1 auto" }} />
@@ -222,23 +206,12 @@ export default function HorizontalNonLinearStepper() {
               </Button> */}
               {activeStep !== steps.length &&
                 (completed.get(activeStep) ? (
-                  <Typography
-                    variant="caption"
-                    sx={{ display: "inline-block" }}
-                  >
+                  <Typography variant="caption" sx={{ display: "inline-block" }}>
                     Step {activeStep + 1} already completed
                   </Typography>
                 ) : (
-                  <Button
-                    onClick={
-                      completedSteps() === totalSteps() - 1
-                        ? handleComplete
-                        : handleNext
-                    }
-                    variant="contained"
-                  >
-                    {" "}
-                    {completedSteps() === totalSteps() - 1 ? "Finish" : "Save"}
+                  <Button onClick={completedSteps() === totalSteps() - 1 ? handleComplete : handleNext} variant="contained" disabled={!isValid}>
+                    {completedSteps() === totalSteps() - 1 ? "Finish" : "Next"}
                   </Button>
                 ))}
             </Box>
