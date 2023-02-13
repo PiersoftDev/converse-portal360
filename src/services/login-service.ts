@@ -16,7 +16,11 @@ export const postUserLogin = (request: ILoginRequest) => {
     });
 };
 
-export const signUp = async (username: string, password: string, givenName: string) => {
+export const signUp = async (
+  username: string,
+  password: string,
+  givenName: string
+) => {
   try {
     const response = await Auth.signUp({
       username,
@@ -46,6 +50,30 @@ export const login = async function signIn(username: string, password: string) {
   try {
     const response = await Auth.signIn(username, password);
     return response.signInUserSession;
+  } catch (error) {
+    console.log("error signing in", error);
+  }
+};
+
+export const forgotPassword = async function forgotPassword(username: string) {
+  try {
+    Auth.forgotPassword(username)
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+  } catch (error) {
+    console.log("error signing in", error);
+  }
+};
+
+export const forgotPasswordSubmit = async function forgotPasswordSubmit(
+  username: string,
+  code: string,
+  newPassword: string
+) {
+  try {
+    Auth.forgotPasswordSubmit(username, code, newPassword)
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
   } catch (error) {
     console.log("error signing in", error);
   }

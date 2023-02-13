@@ -60,7 +60,7 @@ export const LoginForm = ({ onChange }: Props) => {
               id="email"
               label="Email Address"
               name="email"
-              autoComplete="email"
+              autoComplete="off"
               value={loginEmail}
               onChange={(e) => setLoginEmail(e.target.value)}
             />
@@ -73,7 +73,7 @@ export const LoginForm = ({ onChange }: Props) => {
               label="Password"
               type="password"
               id="password"
-              autoComplete="new-password"
+              autoComplete="off"
               value={loginPassword}
               onChange={(e) => setLoginPassword(e.target.value)}
             />

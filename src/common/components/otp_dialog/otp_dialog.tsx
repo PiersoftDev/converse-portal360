@@ -6,14 +6,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import OtpInput from "../otp_input/otp_input";
 
-export default function OTPDialog(openDialog: any, handleConfirmOTP: any) {
+export default function OTPDialog(openDialog: any) {
     console.log(openDialog);
   const [open, setOpen] = React.useState(openDialog);
   const [otp, setOTP] = React.useState("");
 
   const handleClose = () => {
     setOpen(false);
-    handleConfirmOTP(false);
   };
 
   const handleReset = () => {

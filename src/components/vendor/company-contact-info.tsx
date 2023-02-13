@@ -13,16 +13,13 @@ import {
 import { VendorContext, UpdateVendorContext } from "../../context-config";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
 import { updateCompanyContactInformation } from "../../services/vendor-onboarding-service";
-import OtpInput from "../../common/components/otp_input/otp_input";
-import { validateDate } from "@mui/x-date-pickers/internals";
-import { validateEmail } from "../../services/validation-service";
+import OTPDialog from "../../common/components/otp_dialog/otp_dialog";
 
 export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
   const vendorDetails = useContext(VendorContext);
   const updateVendorDetails = useContext(UpdateVendorContext);
   const errorMap = useRef<Map<string, boolean>>(new Map());
-  const [otp, setOtp] = useState("");
-  const onChange = (value: string) => setOtp(value);
+  const [openOTPDialog, setOpenOTPDialog] = useState(false);
 
   const {
     addressLine1,
@@ -90,9 +87,6 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
     updateVendorDetails({
       contactInformation: contactInfo,
     });
-    console.log(key);
-    console.log(value);
-
     // Updating the error map to validate the fields.
     errorMap.current.set(`${key}Error`, value?.trim().length === 0);
   };
@@ -144,11 +138,11 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
               : ""
           }
           InputProps={{
-            endAdornment: <Button variant="contained">Verify</Button>,
+            endAdornment: <Button variant="contained" onClick={()=> {setOpenOTPDialog(true)}}>Verify</Button>,
           }}
         />
 
-        {/* <OtpInput value={otp} valueLength={6} onChange={onChange} /> */}
+        <OTPDialog openDialog={openOTPDialog} />
         <TextField
           id="outlined-basic"
           label="Company Address Line 1"
