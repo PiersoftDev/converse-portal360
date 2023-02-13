@@ -12,7 +12,6 @@ import { CompanyKYC } from "./company-kyc";
 import { useReducer, useRef } from "react";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
-import { updateCompanyContactInformation, updateCompanyKYC } from "../../services/vendor-onboarding-service";
 
 const steps = ["Company Details", "Contact Information", "KYC", "Listings"];
 
@@ -56,9 +55,15 @@ export default function HorizontalNonLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState(new Map());
   const [isValid, setIsValid] = React.useState<boolean>(false);
-  const [id, setId] = React.useState("");
+  // const [id, setId] = React.useState("");
 
   const companyDetailsRef = useRef<any>();
+  const companyContactRef = useRef<any>();
+  const companyKYCRef = useRef<any>();
+  const refMap = useRef<Map<number, any>>(new Map());
+  refMap.current.set(0, companyDetailsRef);
+  refMap.current.set(1, companyContactRef);
+  refMap.current.set(2, companyKYCRef);
 
   // const [vendorId, setVendorId] = React.useState(
   //   "51bc368c-33c8-4386-8460-44f21ff75161"
@@ -90,34 +95,22 @@ export default function HorizontalNonLinearStepper() {
   const handleNext = async () => {
     // Will replace this with switch case.
     // let docId: String;
-    if (activeStep === 0) {
-      if (companyDetailsRef.current) {
-        await companyDetailsRef.current.onSubmit();
-        // TODO : GOTO NEXT STEP ONLY WHEN THIS CALL IS SUCCESSFUL.
-      }
-    } else if (activeStep === 1) {
-      const vendor: IVendor = {
-        id: id,
-        vendorId: "51bc368c-33c8-4386-8460-44f21ff75161",
-        contactInformation: vendorDetails.contactInformation,
-      };
-      try {
-        updateCompanyContactInformation(vendor);
-      } catch (ex) {
-        console.log({ ex });
-      }
-    } else if (activeStep === 2) {
-      const vendor: IVendor = {
-        id: id,
-        vendorId: "51bc368c-33c8-4386-8460-44f21ff75161",
-        kyc: vendorDetails.kyc,
-      };
-      try {
-        updateCompanyKYC(vendor);
-      } catch (ex) {
-        console.log({ ex });
-      }
-    }
+    // if (activeStep === 0) {
+    //   if (companyDetailsRef.current) {
+    //     await companyDetailsRef.current.onSubmit();
+    //     // TODO : GOTO NEXT STEP ONLY WHEN THIS CALL IS SUCCESSFUL.
+    //   }
+    // } else if (activeStep === 1) {
+    //   if (companyContactRef.current) {
+    //     await companyContactRef.current.onSubmit();
+    //     // TODO : GOTO NEXT STEP ONLY WHEN THIS CALL IS SUCCESSFUL.
+    //   }
+    // } else if (activeStep === 2) {
+    //   if (companyKYCRef.current) {
+    //     await companyKYCRef.current.onSubmit();
+    //   }
+    // }
+    await refMap.current.get(activeStep).current.onSubmit();
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
@@ -152,9 +145,9 @@ export default function HorizontalNonLinearStepper() {
       case 0:
         return <CompanyDetails setIsValid={setIsValid} ref={companyDetailsRef} />;
       case 1:
-        return <CompanyContactInfo />;
+        return <CompanyContactInfo setIsValid={setIsValid} ref={companyContactRef} />;
       case 2:
-        return <CompanyKYC />;
+        return <CompanyKYC setIsValid={setIsValid} ref={companyKYCRef} />;
       case 3:
         return <VendorListings />;
       default:

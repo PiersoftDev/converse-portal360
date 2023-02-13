@@ -1,4 +1,4 @@
-export const debounce = (fn: any, interval: number = 300) => {
+export const debounce = (fn: any, interval: number = 100) => {
   let timer: any;
   return (...args: any) => {
     clearTimeout(timer);

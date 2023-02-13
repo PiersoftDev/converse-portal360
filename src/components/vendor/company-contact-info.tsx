@@ -2,15 +2,57 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material/";
 import TextField from "@mui/material/TextField";
-import { useContext } from "react";
+import { forwardRef, useContext, useImperativeHandle, useLayoutEffect, useRef } from "react";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
 import { debounce } from "../../common/helpers/debounce";
+import { IVendor } from "../../models/vendor-onboarding-service-model";
+import { updateCompanyContactInformation } from "../../services/vendor-onboarding-service";
 
-export const CompanyContactInfo = () => {
+export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
   const vendorDetails = useContext(VendorContext);
   const updateVendorDetails = useContext(UpdateVendorContext);
+  const errorMap = useRef<Map<string, boolean>>(new Map());
 
-  let { addressLine1, addressLine2, city, state, postalCode, country, email, phoneNo } = vendorDetails?.contactInformation;
+  const { addressLine1, addressLine2, city, state, postalCode, country, email, phoneNo } = vendorDetails?.contactInformation;
+
+  useLayoutEffect(() => {
+    // Enable the save button only after the required data is filled.
+    const map = errorMap.current;
+    const { addressLine1, addressLine2, city, state, postalCode, country, email, phoneNo } = vendorDetails?.contactInformation;
+    const isValid =
+      !map.get("emailError") &&
+      email.length > 0 &&
+      !map.get("phoneNo") &&
+      phoneNo.length > 0 &&
+      !map.get("addressLine1Error") &&
+      addressLine1.length > 0 &&
+      !map.get("addressLine2Error") &&
+      addressLine2.length > 0 &&
+      !map.get("cityError") &&
+      city.length > 0 &&
+      !map.get("postalCodeError") &&
+      postalCode.length > 0 &&
+      !map.get("stateError") &&
+      state.length > 0 &&
+      !map.get("countryError") &&
+      country.length > 0;
+    props.setIsValid(isValid);
+  });
+
+  useImperativeHandle(ref, () => ({
+    async onSubmit() {
+      const vendor: IVendor = {
+        id: "NEED_TO_REPLACE",
+        vendorId: "51bc368c-33c8-4386-8460-44f21ff75161",
+        contactInformation: vendorDetails.companyDetails,
+      };
+      try {
+        updateCompanyContactInformation(vendor);
+      } catch (ex) {
+        console.log({ ex });
+      }
+    },
+  }));
 
   const setValue = debounce((e: any) => {
     const { name: key, value } = e.target;
@@ -19,6 +61,9 @@ export const CompanyContactInfo = () => {
     updateVendorDetails({
       contactInformation: contactInfo,
     });
+
+    // Updating the error map to validate the fields.
+    errorMap.current.set(`${key}Error`, value?.trim().length === 0);
   });
 
   return (
@@ -42,8 +87,8 @@ export const CompanyContactInfo = () => {
           defaultValue={email}
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
-          error={!email?.length}
-          helperText={!email?.length ? "Company email cannot be empty" : ""}
+          error={errorMap.current.get("emailError")}
+          helperText={errorMap.current.get("emailError") ? "Company email cannot be empty" : ""}
           InputProps={{
             endAdornment: <Button variant="contained">Verify</Button>,
           }}
@@ -57,8 +102,8 @@ export const CompanyContactInfo = () => {
           defaultValue={phoneNo}
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
-          error={!phoneNo?.length}
-          helperText={!phoneNo?.length ? "Company Phone Number cannot be empty" : ""}
+          error={errorMap.current.get("phoneNoError")}
+          helperText={errorMap.current.get("phoneNoError") ? "Company Phone Number cannot be empty" : ""}
           InputProps={{
             endAdornment: <Button variant="contained">Verify</Button>,
           }}
@@ -72,8 +117,8 @@ export const CompanyContactInfo = () => {
           defaultValue={addressLine1}
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
-          error={!addressLine1?.length}
-          helperText={!addressLine1?.length ? "Company Address Line 1 cannot be empty" : ""}
+          error={errorMap.current.get("addressLine1Error")}
+          helperText={errorMap.current.get("addressLine1Error") ? "Company Address Line 1 cannot be empty" : ""}
         />
         <TextField
           id="outlined-basic"
@@ -84,8 +129,8 @@ export const CompanyContactInfo = () => {
           defaultValue={addressLine2}
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
-          error={!addressLine2?.length}
-          helperText={!addressLine2?.length ? "Company Address Line 2 cannot be empty" : ""}
+          error={errorMap.current.get("addressLine2Error")}
+          helperText={errorMap.current.get("addressLine2Error") ? "Company Address Line 2 cannot be empty" : ""}
         />
         <Box display="flex" flexDirection={"row"}>
           <TextField
@@ -97,8 +142,8 @@ export const CompanyContactInfo = () => {
             defaultValue={city}
             sx={{ mt: 3, width: "35ch" }}
             onChange={setValue}
-            error={!city?.length}
-            helperText={!city?.length ? "City cannot be empty" : ""}
+            error={errorMap.current.get("cityError")}
+            helperText={errorMap.current.get("cityError") ? "City cannot be empty" : ""}
           />
 
           <TextField
@@ -110,8 +155,8 @@ export const CompanyContactInfo = () => {
             defaultValue={postalCode}
             sx={{ mt: 3, ml: 5, width: "35ch" }}
             onChange={setValue}
-            error={!postalCode?.length}
-            helperText={!postalCode?.length ? "PostalCode cannot be empty" : ""}
+            error={errorMap.current.get("postalCodeError")}
+            helperText={errorMap.current.get("postalCodeError") ? "PostalCode cannot be empty" : ""}
           />
         </Box>
         <Box display="flex" flexDirection={"row"}>
@@ -124,8 +169,8 @@ export const CompanyContactInfo = () => {
             defaultValue={state}
             sx={{ mt: 3, width: "35ch" }}
             onChange={setValue}
-            error={!state?.length}
-            helperText={!state?.length ? "State cannot be empty" : ""}
+            error={errorMap.current.get("stateError")}
+            helperText={errorMap.current.get("stateError") ? "State cannot be empty" : ""}
           />
 
           <TextField
@@ -137,11 +182,11 @@ export const CompanyContactInfo = () => {
             defaultValue={country}
             sx={{ mt: 3, ml: 5, width: "35ch" }}
             onChange={setValue}
-            error={!country?.length}
-            helperText={!country?.length ? "Country cannot be empty" : ""}
+            error={errorMap.current.get("countryError")}
+            helperText={errorMap.current.get("countryError") ? "Country cannot be empty" : ""}
           />
         </Box>
       </Box>
     </React.Fragment>
   );
-};
+});

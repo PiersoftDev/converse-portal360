@@ -2,7 +2,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { forwardRef, useContext, useRef, useImperativeHandle } from "react";
+import { forwardRef, useContext, useRef, useImperativeHandle, useLayoutEffect } from "react";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
 import { debounce } from "../../common/helpers/debounce";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
@@ -13,7 +13,14 @@ export const CompanyDetails = forwardRef((props: any, ref: any) => {
   const updateVendorDetails = useContext(UpdateVendorContext);
   const errorMap = useRef<Map<string, boolean>>(new Map());
 
-  let { name, type, service, websiteURL, profile } = vendorDetails?.companyDetails;
+  const { name, type, service, websiteURL, profile } = vendorDetails?.companyDetails;
+
+  useLayoutEffect(() => {
+    const map = errorMap.current;
+    const { name, type, service } = vendorDetails?.companyDetails;
+    const isValid = !map.get("nameError") && name.length > 0 && !map.get("serviceError") && service.length > 0 && !map.get("typeError") && type.length > 0;
+    props.setIsValid(isValid);
+  });
 
   useImperativeHandle(ref, () => ({
     async onSubmit() {
@@ -42,12 +49,6 @@ export const CompanyDetails = forwardRef((props: any, ref: any) => {
 
     // Updating the error map to validate the fields.
     errorMap.current.set(`${key}Error`, value?.trim().length === 0);
-
-    // Enable the save button only after the required data is filled.
-    const map = errorMap.current;
-    const { name: newName, type: newType, service: newService } = newCompanyDetails;
-    const isValid = !map.get("nameError") && newName.length > 0 && !map.get("serviceError") && newService.length > 0 && !map.get("typeError") && newType.length > 0;
-    props.setIsValid(isValid);
   });
 
   return (
