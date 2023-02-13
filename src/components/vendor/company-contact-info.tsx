@@ -4,7 +4,6 @@ import { Button } from "@mui/material/";
 import TextField from "@mui/material/TextField";
 import { forwardRef, useContext, useImperativeHandle, useLayoutEffect, useRef } from "react";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
-import { debounce } from "../../common/helpers/debounce";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
 import { updateCompanyContactInformation } from "../../services/vendor-onboarding-service";
 

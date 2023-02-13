@@ -12,6 +12,7 @@ import { CompanyKYC } from "./company-kyc";
 import { useReducer, useRef } from "react";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
+import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 
 const steps = ["Company Details", "Contact Information", "KYC", "Listings"];
 
@@ -55,6 +56,7 @@ export default function HorizontalNonLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState(new Map());
   const [isValid, setIsValid] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   // const [id, setId] = React.useState("");
 
   const companyDetailsRef = useRef<any>();
@@ -93,24 +95,9 @@ export default function HorizontalNonLinearStepper() {
   };
 
   const handleNext = async () => {
-    // Will replace this with switch case.
-    // let docId: String;
-    // if (activeStep === 0) {
-    //   if (companyDetailsRef.current) {
-    //     await companyDetailsRef.current.onSubmit();
-    //     // TODO : GOTO NEXT STEP ONLY WHEN THIS CALL IS SUCCESSFUL.
-    //   }
-    // } else if (activeStep === 1) {
-    //   if (companyContactRef.current) {
-    //     await companyContactRef.current.onSubmit();
-    //     // TODO : GOTO NEXT STEP ONLY WHEN THIS CALL IS SUCCESSFUL.
-    //   }
-    // } else if (activeStep === 2) {
-    //   if (companyKYCRef.current) {
-    //     await companyKYCRef.current.onSubmit();
-    //   }
-    // }
+    setIsLoading(true);
     await refMap.current.get(activeStep).current.onSubmit();
+    setIsLoading(false);
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
@@ -204,7 +191,18 @@ export default function HorizontalNonLinearStepper() {
                   </Typography>
                 ) : (
                   <Button onClick={completedSteps() === totalSteps() - 1 ? handleComplete : handleNext} variant="contained" disabled={!isValid}>
-                    {completedSteps() === totalSteps() - 1 ? "Finish" : "Next"}
+                    {isLoading ? (
+                      <CircularProgress
+                        size={16}
+                        sx={{
+                          color: "white",
+                        }}
+                      />
+                    ) : completedSteps() === totalSteps() - 1 ? (
+                      "Finish"
+                    ) : (
+                      "Next"
+                    )}
                   </Button>
                 ))}
             </Box>
