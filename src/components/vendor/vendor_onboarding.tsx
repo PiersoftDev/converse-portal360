@@ -11,8 +11,8 @@ export const VendorOnboarding = () => {
 
   return (
     <>
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
+      {/* <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}> */}
           <CssBaseline />
           <div className="app">
             <Sidebar />
@@ -23,8 +23,8 @@ export const VendorOnboarding = () => {
               </Box>
             </main>
           </div>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
+        {/* </ThemeProvider>
+      </ColorModeContext.Provider> */}
     </>
   );
 };

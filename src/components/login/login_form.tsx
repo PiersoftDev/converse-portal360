@@ -106,6 +106,9 @@ export const LoginForm = ({ onChange }: Props) => {
             <Button variant="text" onClick={() => onChange(false)}>
               New? Create Account
             </Button>
+            <Button variant="text" onClick={() => onChange(false)} sx={{color: "#9C27B0"}}>
+              Forgot Password
+            </Button>
           </Grid>
         </Grid>
       </Box>

@@ -76,7 +76,7 @@ export const Sidebar = () => {
           >
             {!isCollapsed && (
               <Box display="flex" justifyContent="space-between" alignItems="center" ml="15px">
-                <Typography variant="h3" color={colors.grey[100]}>
+                <Typography variant="h5" color={colors.grey[100]}>
                   CONVERSE
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -105,7 +105,7 @@ export const Sidebar = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             {/* <Item title="Dashboard" to="/dashboard" icon={<HomeOutlinedIcon />} selected={selected} setSelected={setSelected} /> */}
 
-            <Typography variant="h6" color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>
+            <Typography color={colors.grey[300]} sx={{ m: "15px 0 5px 20px" }}>
               Vendor
             </Typography>
             <Item title="Vendor Onboarding" to="/vendor-onboarding" icon={<RsvpOutlinedIcon />} selected={selected} setSelected={setSelected} />
