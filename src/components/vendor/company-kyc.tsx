@@ -22,10 +22,11 @@ export const CompanyKYC = forwardRef((props: any, ref: any) => {
   });
 
   useImperativeHandle(ref, () => ({
-    async onSubmit() {
+    async onSubmit(vendorId: string) {
+      console.log("VendorId in kyc:" + vendorId);
       const vendor: IVendor = {
         id: props.id,
-        vendorId: "51bc368c-33c8-4386-8460-44f21ff75161",
+        vendorId: vendorId,
         kyc: vendorDetails.kyc,
       };
       try {

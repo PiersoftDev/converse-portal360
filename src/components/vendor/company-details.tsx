@@ -12,7 +12,10 @@ import {
 import { VendorContext, UpdateVendorContext } from "../../context-config";
 
 import { IVendor } from "../../models/vendor-onboarding-service-model";
-import { postVendorCompanyInformation } from "../../services/vendor-onboarding-service";
+import {
+  postVendorCompanyInformation,
+  updateCompanyDetails,
+} from "../../services/vendor-onboarding-service";
 
 export const CompanyDetails = forwardRef((props: any, ref: any) => {
   const vendorDetails = useContext(VendorContext);
@@ -37,9 +40,10 @@ export const CompanyDetails = forwardRef((props: any, ref: any) => {
   });
 
   useImperativeHandle(ref, () => ({
-    async onSubmit() {
+    async onSubmit(vendorId: string) {
+      console.log("VendorId in company details:" + vendorId);
       const vendor: IVendor = {
-        vendorId: "51bc368c-33c8-4386-8460-44f21ff75161",
+        vendorId: vendorId,
         companyDetails: vendorDetails.companyDetails,
       };
       try {

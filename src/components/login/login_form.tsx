@@ -36,7 +36,7 @@ export const LoginForm = ({ onChange }: Props) => {
       }
       setLoading(true);
       const user = await login(loginEmail, loginPassword);
-      navigate("/dashboard");
+      navigate("/vendor-onboarding");
       setLoading(false);
       UserContext = createContext(user);
     } catch (e) {

@@ -9,10 +9,11 @@ import { CompanyDetails } from "./company-details";
 import { CompanyContactInfo } from "./company-contact-info";
 import { VendorListings } from "./vendor-listings";
 import { CompanyKYC } from "./company-kyc";
-import { useReducer, useRef } from "react";
+import { useReducer, useRef, useContext } from "react";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
+import { UserContext } from "../login/login_form";
 import SuccessSnackBar from "../../common/components/snack_bar/success_snack_bar";
 
 const steps = ["Company Details", "Contact Information", "KYC", "Listings"];
@@ -59,6 +60,10 @@ export default function HorizontalNonLinearStepper() {
   const [isValid, setIsValid] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [id, setId] = React.useState("");
+  const user = useContext(UserContext);
+  const [vendorId, setVendorId] = React.useState(
+    user ? user["idToken"]["payload"]["sub"] : ""
+  );
 
   const companyDetailsRef = useRef<any>();
   const companyContactRef = useRef<any>();
@@ -101,7 +106,7 @@ export default function HorizontalNonLinearStepper() {
   const handleNext = async () => {
     try {
       setIsLoading(true);
-      await refMap.current.get(activeStep).current.onSubmit();
+      await refMap.current.get(activeStep).current.onSubmit(vendorId);
       //return <SuccessSnackBar open={true} success="Successfully saved the data" />;
     } catch (e) {
       console.log(e);
@@ -142,6 +147,7 @@ export default function HorizontalNonLinearStepper() {
       case 0:
         return (
           <CompanyDetails
+            id={id}
             setId={setId}
             setIsValid={setIsValid}
             ref={companyDetailsRef}
@@ -165,7 +171,6 @@ export default function HorizontalNonLinearStepper() {
         <div>Empty Page</div>;
     }
   };
-
   return (
     <Box sx={{ ml: "20px", width: "80%" }}>
       <Stepper nonLinear activeStep={activeStep}>
