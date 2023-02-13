@@ -4,7 +4,6 @@ import { Button } from "@mui/material/";
 import TextField from "@mui/material/TextField";
 import { useContext, useRef, forwardRef, useImperativeHandle, useLayoutEffect } from "react";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
-import { debounce } from "../../common/helpers/debounce";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
 import { updateCompanyKYC } from "../../services/vendor-onboarding-service";
 
@@ -37,7 +36,7 @@ export const CompanyKYC = forwardRef((props: any, ref: any) => {
     },
   }));
 
-  const setValue = debounce((e: any) => {
+  const setValue = (e: any) => {
     const { name: key, value } = e.target;
     const kyc = { ...vendorDetails.kyc };
     kyc[key] = value;
@@ -47,7 +46,7 @@ export const CompanyKYC = forwardRef((props: any, ref: any) => {
 
     // Updating the error map to validate the fields.
     errorMap.current.set(`${key}Error`, value?.trim().length === 0);
-  });
+  };
 
   return (
     <React.Fragment>

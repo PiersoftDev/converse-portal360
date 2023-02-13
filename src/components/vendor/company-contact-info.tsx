@@ -54,7 +54,7 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
     },
   }));
 
-  const setValue = debounce((e: any) => {
+  const setValue = (e: any) => {
     const { name: key, value } = e.target;
     const contactInfo = { ...vendorDetails.contactInformation };
     contactInfo[key] = value;
@@ -64,7 +64,7 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
 
     // Updating the error map to validate the fields.
     errorMap.current.set(`${key}Error`, value?.trim().length === 0);
-  });
+  };
 
   return (
     <React.Fragment>

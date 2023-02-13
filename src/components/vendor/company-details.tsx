@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { forwardRef, useContext, useRef, useImperativeHandle, useLayoutEffect } from "react";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
-import { debounce } from "../../common/helpers/debounce";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
 import { postVendorCompanyInformation } from "../../services/vendor-onboarding-service";
 
@@ -20,6 +19,7 @@ export const CompanyDetails = forwardRef((props: any, ref: any) => {
     const { name, type, service } = vendorDetails?.companyDetails;
     const isValid = !map.get("nameError") && name.length > 0 && !map.get("serviceError") && service.length > 0 && !map.get("typeError") && type.length > 0;
     props.setIsValid(isValid);
+    console.log("Component Rendered.");
   });
 
   useImperativeHandle(ref, () => ({
@@ -37,7 +37,7 @@ export const CompanyDetails = forwardRef((props: any, ref: any) => {
     },
   }));
 
-  const setValue = debounce((e: any) => {
+  const setValue = (e: any) => {
     const { name: key, value } = e.target;
     const newCompanyDetails = { ...vendorDetails.companyDetails };
     newCompanyDetails[key] = value.trim();
@@ -49,7 +49,7 @@ export const CompanyDetails = forwardRef((props: any, ref: any) => {
 
     // Updating the error map to validate the fields.
     errorMap.current.set(`${key}Error`, value?.trim().length === 0);
-  });
+  };
 
   return (
     <React.Fragment>
