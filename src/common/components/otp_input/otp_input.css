@@ -1,20 +1,22 @@
 .otp-group {
-    display: flex;
-    width: 100%;
-    max-width: 360px;
-    column-gap: 10px;
+  display: grid;
+  width: 75%;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
 
-  }
-  
-  .otp-input {
-    width: 100%;
-    height: 60px;
-    background-color: #D8C99D;
-    border: 1px solid #22343E;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 28px;
-    font-weight: normal;
-    color: #22343E;
-    line-height: 1;
-  }
+.otp-input {
+  width: 100%;
+  height: 60px;
+  background-color: #d8c99d;
+  border: 1px solid #22343e;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: normal;
+  color: #22343e;
+  line-height: 1;
+}
