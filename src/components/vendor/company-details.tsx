@@ -47,7 +47,7 @@ export const CompanyDetails = forwardRef((props: any, ref: any) => {
         companyDetails: vendorDetails.companyDetails,
       };
       try {
-        postVendorCompanyInformation(vendor, props.setId);
+        await postVendorCompanyInformation(vendor, props.setId);
       } catch (ex) {
         console.log({ ex });
       }

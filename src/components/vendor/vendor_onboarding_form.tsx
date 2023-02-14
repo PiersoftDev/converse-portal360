@@ -62,7 +62,9 @@ export default function HorizontalNonLinearStepper() {
   const [isSnackBarOpen, setIsSnackbarOpen] = React.useState<boolean>(false);
   const [id, setId] = React.useState("");
   const user = useContext(UserContext);
-  const [vendorId, setVendorId] = React.useState(user ? user["idToken"]["payload"]["sub"] : "");
+  const [vendorId, setVendorId] = React.useState(
+    user ? user["idToken"]["payload"]["sub"] : ""
+  );
 
   const companyDetailsRef = useRef<any>();
   const companyContactRef = useRef<any>();
@@ -81,7 +83,10 @@ export default function HorizontalNonLinearStepper() {
   };
 
   // TODO : INITIAL VENDOR DETAILS SHOULD BE FETCHED FROM API, IF THE VENDOR IS NEW, WE SET VALUES TO DEFAULT AS DEFINED ABOVE I.E., INITIAL VENDOR DETAILS.
-  const [vendorDetails, updateVendorDetails] = useReducer(vendorDetailsReducer, initialVendorDetails);
+  const [vendorDetails, updateVendorDetails] = useReducer(
+    vendorDetailsReducer,
+    initialVendorDetails
+  );
 
   const totalSteps = () => {
     return steps.length;
@@ -103,12 +108,9 @@ export default function HorizontalNonLinearStepper() {
     try {
       setIsLoading(true);
       await refMap.current.get(activeStep).current.onSubmit(vendorId);
-      setIsSnackbarOpen(true);
-      //return <SuccessSnackBar open={true} success="Successfully saved the data" />;
     } catch (e) {
       console.log(e);
     } finally {
-      setIsLoading(false);
     }
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
@@ -116,7 +118,13 @@ export default function HorizontalNonLinearStepper() {
           // find the first step that has been completed
           steps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
-    setActiveStep(newActiveStep);
+    await setTimeout(() => {
+      setIsLoading(false);
+      setIsSnackbarOpen(true);
+    }, 1000);
+    setTimeout(() => {
+      setActiveStep(newActiveStep);
+    }, 3000);
   };
 
   const handleBack = () => {
@@ -142,11 +150,26 @@ export default function HorizontalNonLinearStepper() {
   const _renderStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <CompanyDetails id={id} setId={setId} setIsValid={setIsValid} ref={companyDetailsRef} />;
+        return (
+          <CompanyDetails
+            id={id}
+            setId={setId}
+            setIsValid={setIsValid}
+            ref={companyDetailsRef}
+          />
+        );
       case 1:
-        return <CompanyContactInfo id={id} setIsValid={setIsValid} ref={companyContactRef} />;
+        return (
+          <CompanyContactInfo
+            id={id}
+            setIsValid={setIsValid}
+            ref={companyContactRef}
+          />
+        );
       case 2:
-        return <CompanyKYC id={id} setIsValid={setIsValid} ref={companyKYCRef} />;
+        return (
+          <CompanyKYC id={id} setIsValid={setIsValid} ref={companyKYCRef} />
+        );
       case 3:
         return <VendorListings />;
       default:
@@ -165,7 +188,9 @@ export default function HorizontalNonLinearStepper() {
       <div>
         {allStepsCompleted() ? (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
+            <Typography sx={{ mt: 2, mb: 1 }}>
+              All steps completed - you&apos;re finished
+            </Typography>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleReset}>Reset</Button>
@@ -181,10 +206,12 @@ export default function HorizontalNonLinearStepper() {
               open={isSnackBarOpen}
               onClose={() => setIsSnackbarOpen(false)}
               message="Data saved successfully"
-              autoHideDuration={4000}
+              autoHideDuration={2000}
             />
             <VendorContext.Provider value={vendorDetails}>
-              <UpdateVendorContext.Provider value={updateVendorDetails}>{_renderStepContent(activeStep)}</UpdateVendorContext.Provider>
+              <UpdateVendorContext.Provider value={updateVendorDetails}>
+                {_renderStepContent(activeStep)}
+              </UpdateVendorContext.Provider>
             </VendorContext.Provider>
             <Box
               sx={{
@@ -198,7 +225,13 @@ export default function HorizontalNonLinearStepper() {
                 justifyContent: "center",
               }}
             >
-              <Button variant="contained" color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
+              <Button
+                variant="contained"
+                color="inherit"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >
                 Back
               </Button>
               <Box sx={{ flex: "1 1 auto" }} />
@@ -207,11 +240,22 @@ export default function HorizontalNonLinearStepper() {
               </Button> */}
               {activeStep !== steps.length &&
                 (completed.get(activeStep) ? (
-                  <Typography variant="caption" sx={{ display: "inline-block" }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ display: "inline-block" }}
+                  >
                     Step {activeStep + 1} already completed
                   </Typography>
                 ) : (
-                  <Button onClick={completedSteps() === totalSteps() - 1 ? handleComplete : handleNext} variant="contained" disabled={!isValid}>
+                  <Button
+                    onClick={
+                      completedSteps() === totalSteps() - 1
+                        ? handleComplete
+                        : handleNext
+                    }
+                    variant="contained"
+                    disabled={!isValid}
+                  >
                     {isLoading ? (
                       <CircularProgress
                         size={16}

@@ -69,3 +69,19 @@ export const updateCompanyKYC = (request: IVendor) => {
       // always executed
     });
 };
+
+export const verifyPhoneNumber = (phoneNumber: IVendor) => {
+  console.log(phoneNumber);
+  Axios.post(
+    "http://localhost:8080/converse/v1/verifications/test/send-otp/+91"+phoneNumber
+  )
+    .then((response) => {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+};
