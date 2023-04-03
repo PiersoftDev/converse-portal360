@@ -2,10 +2,17 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material/";
 import TextField from "@mui/material/TextField";
-import { forwardRef, useContext, useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { VendorContext, UpdateVendorContext } from "../../context-config";
 import { IVendor } from "../../models/vendor-onboarding-service-model";
-import { updateCompanyContactInformation } from "../../services/vendor-onboarding-service";
+import { updateCompanyContactInformation, sendOTP } from "../../services/vendor-onboarding-service";
 import { OTPDialog } from "../../common/components/otp_dialog/otp_dialog";
 
 export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
@@ -13,13 +20,33 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
   const updateVendorDetails = useContext(UpdateVendorContext);
   const errorMap = useRef<Map<string, boolean>>(new Map());
   const [openOTPDialog, setOpenOTPDialog] = useState<boolean>(false);
+  const [otpField, setOTPField] = useState("");
+  const [otpFieldValue, setOTPFieldValue] = useState("");
 
-  const { addressLine1, addressLine2, city, state, postalCode, country, email, phoneNo } = vendorDetails?.contactInformation;
+  const {
+    addressLine1,
+    addressLine2,
+    city,
+    state,
+    postalCode,
+    country,
+    email,
+    phoneNo,
+  } = vendorDetails?.contactInformation;
 
   useLayoutEffect(() => {
     // Enable the save button only after the required data is filled.
     const map = errorMap.current;
-    const { addressLine1, addressLine2, city, state, postalCode, country, email, phoneNo } = vendorDetails?.contactInformation;
+    const {
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      postalCode,
+      country,
+      email,
+      phoneNo,
+    } = vendorDetails?.contactInformation;
     const isValid =
       !map.get("emailError") &&
       email.length > 0 &&
@@ -89,9 +116,24 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
           error={errorMap.current.get("emailError")}
-          helperText={errorMap.current.get("emailError") ? "Company email cannot be empty" : ""}
+          helperText={
+            errorMap.current.get("emailError")
+              ? "Company email cannot be empty"
+              : ""
+          }
           InputProps={{
-            endAdornment: <Button variant="contained">Verify</Button>,
+            endAdornment: (
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                  setOTPField("email");
+                  setOTPFieldValue(email);
+                  setOpenOTPDialog(true);
+                }}
+              >
+                Verify
+              </Button>
+            ),
           }}
         />
         <TextField
@@ -104,14 +146,20 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
           error={errorMap.current.get("phoneNoError")}
-          helperText={errorMap.current.get("phoneNoError") ? "Company Phone Number cannot be empty" : ""}
+          helperText={
+            errorMap.current.get("phoneNoError")
+              ? "Company Phone Number cannot be empty"
+              : ""
+          }
           InputProps={{
             endAdornment: (
               <Button
                 variant="contained"
                 onClick={(e) => {
-                  console.log("Verify Clicked!");
+                  setOTPField("phoneNo");
+                  setOTPFieldValue(phoneNo);
                   setOpenOTPDialog(true);
+                  sendOTP(phoneNo);
                 }}
               >
                 Verify
@@ -119,7 +167,14 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
             ),
           }}
         />
-        {openOTPDialog && <OTPDialog openDialog={true} dialogClosed={() => setOpenOTPDialog(false)} />}
+        {openOTPDialog && (
+          <OTPDialog
+            field={otpField}
+            fieldValue={otpFieldValue}
+            openDialog={true}
+            dialogClosed={() => setOpenOTPDialog(false)}
+          />
+        )}
         <TextField
           id="outlined-basic"
           label="Company Address Line 1"
@@ -130,7 +185,11 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
           error={errorMap.current.get("addressLine1Error")}
-          helperText={errorMap.current.get("addressLine1Error") ? "Company Address Line 1 cannot be empty" : ""}
+          helperText={
+            errorMap.current.get("addressLine1Error")
+              ? "Company Address Line 1 cannot be empty"
+              : ""
+          }
         />
         <TextField
           id="outlined-basic"
@@ -142,7 +201,11 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
           sx={{ mt: 3, width: "75ch" }}
           onChange={setValue}
           error={errorMap.current.get("addressLine2Error")}
-          helperText={errorMap.current.get("addressLine2Error") ? "Company Address Line 2 cannot be empty" : ""}
+          helperText={
+            errorMap.current.get("addressLine2Error")
+              ? "Company Address Line 2 cannot be empty"
+              : ""
+          }
         />
         <Box display="flex" flexDirection={"row"}>
           <TextField
@@ -155,7 +218,9 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
             sx={{ mt: 3, width: "35ch" }}
             onChange={setValue}
             error={errorMap.current.get("cityError")}
-            helperText={errorMap.current.get("cityError") ? "City cannot be empty" : ""}
+            helperText={
+              errorMap.current.get("cityError") ? "City cannot be empty" : ""
+            }
           />
 
           <TextField
@@ -168,7 +233,11 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
             sx={{ mt: 3, ml: 5, width: "35ch" }}
             onChange={setValue}
             error={errorMap.current.get("postalCodeError")}
-            helperText={errorMap.current.get("postalCodeError") ? "PostalCode cannot be empty" : ""}
+            helperText={
+              errorMap.current.get("postalCodeError")
+                ? "PostalCode cannot be empty"
+                : ""
+            }
           />
         </Box>
         <Box display="flex" flexDirection={"row"}>
@@ -182,7 +251,9 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
             sx={{ mt: 3, width: "35ch" }}
             onChange={setValue}
             error={errorMap.current.get("stateError")}
-            helperText={errorMap.current.get("stateError") ? "State cannot be empty" : ""}
+            helperText={
+              errorMap.current.get("stateError") ? "State cannot be empty" : ""
+            }
           />
 
           <TextField
@@ -195,7 +266,11 @@ export const CompanyContactInfo = forwardRef((props: any, ref: any) => {
             sx={{ mt: 3, ml: 5, width: "35ch" }}
             onChange={setValue}
             error={errorMap.current.get("countryError")}
-            helperText={errorMap.current.get("countryError") ? "Country cannot be empty" : ""}
+            helperText={
+              errorMap.current.get("countryError")
+                ? "Country cannot be empty"
+                : ""
+            }
           />
         </Box>
       </Box>

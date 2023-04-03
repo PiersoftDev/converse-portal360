@@ -3,7 +3,7 @@ import { IVendor } from "../models/vendor-onboarding-service-model";
 
 export const postVendorCompanyInformation = (request: IVendor, setId: any) => {
   console.log(request);
-  let docId : string = "";
+  let docId: string = "";
   Axios.post("http://localhost:8080/converse/v1/vendor/onboard", request)
     .then((response) => {
       console.log(response);
@@ -70,10 +70,30 @@ export const updateCompanyKYC = (request: IVendor) => {
     });
 };
 
-export const verifyPhoneNumber = (phoneNumber: IVendor) => {
+export const sendOTP = (phoneNumber: string) => {
   console.log(phoneNumber);
   Axios.post(
-    "http://localhost:8080/converse/v1/verifications/test/send-otp/+91"+phoneNumber
+    "http://localhost:8080/converse/v1/verifications/test/phoneNo/+91" +
+      phoneNumber
+  )
+    .then((response) => {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+};
+
+export const verifyPhoneNumber = (phoneNumber: string, otp: string) => {
+  console.log(phoneNumber);
+  Axios.post(
+    "http://localhost:8080/converse/v1/verifications/test/verify-otp/+91" +
+      phoneNumber +
+      "/" +
+      otp
   )
     .then((response) => {
       console.log(response);

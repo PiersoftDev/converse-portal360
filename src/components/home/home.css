@@ -39,15 +39,21 @@
 }
 
 .home-page__hero-text-container{
-  background-color: #D8C99D;
+  background-color: #EAE3D2;
 
   
 }
 
-h1{
+.truckImg{
+  width: 10vw;
+}
+
+h1,h5{
   color: #22343E;
-  font-family: Roboto Condensed;
+  font-family: 'Dosis', sans-serif;
   font-weight: bolder;
+  font-size: 5 rem;
+  line-height: 2.2;
   margin-left: 3%;
   margin-top: 3%;
   float: left;
@@ -69,6 +75,6 @@ button {
 
 .home-page__logo{
   width: 5vw;
-  margin-left: 1%;
+  margin-left: 50%;
   margin-top: 1%;
 }

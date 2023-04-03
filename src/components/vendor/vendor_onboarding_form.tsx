@@ -15,6 +15,7 @@ import { VendorContext, UpdateVendorContext } from "../../context-config";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import { UserContext } from "../login/login_form";
 import { Snackbar } from "@mui/material";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 const steps = ["Company Details", "Contact Information", "KYC", "Listings"];
 
@@ -176,6 +177,21 @@ export default function HorizontalNonLinearStepper() {
         <div>Empty Page</div>;
     }
   };
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsSnackbarOpen(false);
+  };
   return (
     <Box sx={{ ml: "20px", width: "80%" }}>
       <Stepper nonLinear activeStep={activeStep}>
@@ -199,15 +215,19 @@ export default function HorizontalNonLinearStepper() {
         ) : (
           <React.Fragment>
             <Snackbar
-              sx={{
-                background: "green !important",
-              }}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
               open={isSnackBarOpen}
-              onClose={() => setIsSnackbarOpen(false)}
-              message="Data saved successfully"
               autoHideDuration={2000}
-            />
+              onClose={handleClose}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+              <Alert
+                onClose={handleClose}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                Successfully saved data
+              </Alert>
+            </Snackbar>
             <VendorContext.Provider value={vendorDetails}>
               <UpdateVendorContext.Provider value={updateVendorDetails}>
                 {_renderStepContent(activeStep)}
