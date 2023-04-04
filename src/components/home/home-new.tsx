@@ -1,7 +1,7 @@
 import React from "react";
 import "./home.css";
 import logo from "../../images/logo.png";
-import { Dialog, Button, TextField } from "@mui/material";
+import { Dialog, Button } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { Login } from "../login/login";
@@ -14,10 +14,7 @@ import img3 from "../../images/hero_img_3.png";
 import img4 from "../../images/hero_img_4.png";
 import img5 from "../../images/hero_img_5.png";
 import img6 from "../../images/hero_img_6.png";
-import happy from "../../images/happy.png";
 import Grid from "@mui/material/Unstable_Grid2";
-import { SignUpForm } from "../login/signup_form";
-import { LoginForm } from "../login/login_form";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
