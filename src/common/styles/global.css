@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 :root {
@@ -39,4 +40,10 @@ section {
   top: 50%;
   left: 0;
   margin-top: 3px;
+}
+
+.gradient-text {
+  background: -webkit-linear-gradient(#2350a2, #638bb0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

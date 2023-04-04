@@ -54,7 +54,8 @@ export const CompanyKYC = forwardRef((props: any, ref: any) => {
       <Box
         component="form"
         sx={{
-          mt: 5,
+          mt: 2,
+          mb: 5,
         }}
         noValidate
         autoComplete="off"

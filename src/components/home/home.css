@@ -1,6 +1,3 @@
-* {
-  font-family: "Poppins", sans-serif;
-}
 .introduction-text {
   font-weight: bold;
 }
@@ -85,10 +82,4 @@ button {
 
 .main-text {
   font-size: 1.3rem;
-}
-
-.gradient-text {
-  background: -webkit-linear-gradient(#2350a2, #638bb0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }

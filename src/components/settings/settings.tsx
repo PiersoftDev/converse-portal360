@@ -2,6 +2,7 @@ import { Box, Tab, Typography, Tabs, Grid } from "@mui/material";
 import { useState } from "react";
 import { Members } from "./members";
 import { Divider } from "antd";
+import { PartnerInfo } from "./partner-info";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -46,7 +47,9 @@ export const Settings = () => {
             <Tab label="Members" {...a11yProps(1)} />
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}></TabPanel>
+        <TabPanel value={value} index={0}>
+          <PartnerInfo />
+        </TabPanel>
         <TabPanel value={value} index={1}>
           <Members />
           <Divider />
