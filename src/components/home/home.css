@@ -1,9 +1,12 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
 .introduction-text {
   font-weight: bold;
 }
 
 .introduction-text .primary {
-  color: #22343E;
+  color: #22343e;
   font-size: 3rem;
 }
 
@@ -16,7 +19,7 @@
   margin-top: 2rem;
 }
 
-.introduction-text  {
+.introduction-text {
   margin-top: 15%;
   margin-left: 10%;
   padding: 0.5rem 1rem;
@@ -28,41 +31,38 @@
   transition: all 0.5s;
 }
 
-
 .introduction-text button:active {
   transform: scale(0.95);
 }
 
-.home-page__hero-image{
+.home-page__hero-image {
   width: 50vw;
   height: 100vh;
 }
 
-.home-page__hero-text-container{
-  background-color: #EAE3D2;
-
-  
+.home-page__hero-text-container {
+  background-color: #eae3d2;
 }
 
-.truckImg{
+.truckImg {
   width: 10vw;
 }
 
-h1,h5{
-  color: #22343E;
-  font-family: 'Dosis', sans-serif;
-  font-weight: bolder;
+/* h1,
+h5 {
+  color: #22343e;
+  font-weight: bold;
   font-size: 5 rem;
   line-height: 2.2;
   margin-left: 3%;
   margin-top: 3%;
   float: left;
-}
+} */
 
 button {
   padding: 0.5rem 1rem;
-  background-color: #22343E;
-  color: #D8C99D;
+  background-color: #22343e;
+  color: #d8c99d;
   outline: none;
   border-radius: 10px !important;
   font-size: 1.2rem;
@@ -73,8 +73,22 @@ button {
   margin-top: 3%;
 }
 
-.home-page__logo{
+.home-page__logo {
   width: 5vw;
   margin-left: 50%;
   margin-top: 1%;
+}
+
+.main-heading {
+  font-size: 5rem;
+}
+
+.main-text {
+  font-size: 1.3rem;
+}
+
+.gradient-text {
+  background: -webkit-linear-gradient(#2350a2, #638bb0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

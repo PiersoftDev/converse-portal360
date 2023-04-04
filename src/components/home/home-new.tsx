@@ -47,25 +47,11 @@ export const Home = () => {
 
   return (
     <div>
-      <Dialog
-        open={showSignInPopup}
-        onClose={handleSignInClose}
-        TransitionComponent={Transition}
-      >
-        <Login
-          showSignInForm={showSignInPopup}
-          showSignUpForm={showSignUpPopup}
-        />
+      <Dialog open={showSignInPopup} onClose={handleSignInClose} TransitionComponent={Transition}>
+        <Login showSignInForm={showSignInPopup} showSignUpForm={showSignUpPopup} />
       </Dialog>
-      <Dialog
-        open={showSignUpPopup}
-        onClose={handleSignUpClose}
-        TransitionComponent={Transition}
-      >
-        <Login
-          showSignInForm={showSignInPopup}
-          showSignUpForm={showSignUpPopup}
-        />
+      <Dialog open={showSignUpPopup} onClose={handleSignUpClose} TransitionComponent={Transition}>
+        <Login showSignInForm={showSignInPopup} showSignUpForm={showSignUpPopup} />
       </Dialog>
       <Container>
         <Box
@@ -87,12 +73,9 @@ export const Home = () => {
               justifyContent: "flex-start",
             }}
           >
-            <img
-              src={logo}
-              style={{ width: 40, height: 40, alignContent: "center" }}
-            />
+            <img src={logo} style={{ width: 40, height: 40, alignContent: "center" }} />
             <p style={{ padding: 6 }}>
-              <h5>PARTNER.ME</h5>
+              <h3 className="gradient-text">PARTNER.ME</h3>
             </p>
           </Box>
 
@@ -117,6 +100,7 @@ export const Home = () => {
             height: "60vh",
             backgroundColor: "#F7F6F2",
             borderRadius: 3,
+            position: "relative",
           }}
         >
           <Grid
@@ -129,25 +113,23 @@ export const Home = () => {
             }}
           >
             <Grid xs={7} sx={{ mt: 10 }}>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <img src={happy} style={{ width: 40, height: 40 }} />
-                <h1>PARTNER.ME</h1>
+              <div style={{ display: "flex", flexDirection: "row", marginBottom: "1rem" }}>
+                {/* <img src={happy} style={{ width: 300, height: 300, position: "absolute", left: "3%", bottom: "2%" }} alt="Crew" />*/}
+                <h1 className="main-heading gradient-text">Partnerships Made Easy!</h1>
               </div>
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <h5>
-                  From towering skyscrapers to grounded roads, no project is too
-                  big or small for our crew. So suit up and
+                <p className="main-text">
+                  From towering skyscrapers to grounded roads, no project is too big or small for our crew. <br /> So suit up and <b className="gradient-text">PARTNER</b> us on this epic adventure to
+                  put the pieces together and <b className="gradient-text">BUILD</b> something meaningful.
                   {/* <div style={{ color: "#C85A3A" }}> */}
-                  <i style={{ color: "#C85A3A" }}>
+                  {/* <i style={{ color: "#C85A3A" }}>
                     <span> PARTNER </span>
-                  </i>
+                  </i> */}
                   {/* </div> */}
-                  us on this epic adventure to put the pieces together and
-                  <i style={{ color: "#FF4D54" }}>
+                  {/* <i style={{ color: "#FF4D54" }}>
                     <span> Build </span>
-                  </i>
-                  something meaningful.
-                </h5>
+                  </i> */}
+                </p>
                 <div
                   style={{
                     display: "flex",
@@ -155,31 +137,20 @@ export const Home = () => {
                     marginTop: 10,
                   }}
                 >
-                  <TextField
-                    id="outlined-basic"
-                    label="Enter Whatsapp Number"
-                    variant="outlined"
-                    sx={{
-                      width: "20vw",
-                      ml: 2,
-                      p: 0,
-                      height: 40,
-                      lineHeight: "10vh",
-                    }}
-                  />
                   <Button
                     variant="contained"
                     size="medium"
                     sx={{
                       backgroundColor: "#2350A2",
                       height: 40,
-                      ml: 2,
+                      padding: "1.5rem",
+                      background: "-webkit-linear-gradient(#2350a2, #638bb0)",
                       mt: 1,
                     }}
                     startIcon={<GroupAddIcon />}
                     onClick={goToSignUp}
                   >
-                    Join Network
+                    <strong>Join Network</strong>
                   </Button>
                 </div>
               </div>
