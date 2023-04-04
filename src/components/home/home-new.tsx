@@ -27,21 +27,37 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export const Home = () => {
-  const [showLoginPopup, setShowLoginPopup] = React.useState(false);
-  const handleClose = () => {
-    setShowLoginPopup(false);
+  const [showSignInPopup, setShowSignInPopup] = React.useState(false);
+  const [showSignUpPopup, setShowSignUpPopup] = React.useState(false);
+  const handleSignInClose = () => {
+    setShowSignInPopup(false);
   };
-  const goToLogin = () => {
-    setShowLoginPopup(true);
+  const goToSignIn = () => {
+    setShowSignInPopup(true);
   };
+
+  const handleSignUpClose = () => {
+    setShowSignUpPopup(false);
+  };
+  const goToSignUp = () => {
+    setShowSignUpPopup(true);
+  };
+
   return (
     <div>
       <Dialog
-        open={showLoginPopup}
-        onClose={handleClose}
+        open={showSignInPopup}
+        onClose={handleSignInClose}
         TransitionComponent={Transition}
       >
         <Login />
+      </Dialog>
+      <Dialog
+        open={showSignUpPopup}
+        onClose={handleSignUpClose}
+        TransitionComponent={Transition}
+      >
+        <Login showSignIn={true}/>
       </Dialog>
       <Container>
         <Box
@@ -79,9 +95,9 @@ export const Home = () => {
               backgroundColor: "#2350A2",
               height: 40,
             }}
-            onClick={goToLogin}
+            onClick={goToSignIn}
           >
-            Login
+            Sign In
           </Button>
         </Box>
 
@@ -155,7 +171,7 @@ export const Home = () => {
                       mt: 1,
                     }}
                     startIcon={<GroupAddIcon />}
-                    onClick={goToLogin}
+                    onClick={goToSignUp}
                   >
                     Join Network
                   </Button>

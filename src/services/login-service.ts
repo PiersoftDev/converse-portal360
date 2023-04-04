@@ -2,6 +2,16 @@ import Axios from "axios";
 import { ILoginRequest } from "../models/login-service-model";
 import { Auth } from "aws-amplify";
 
+var firebaseConfig = {
+  apiKey: "AIzaSyChLpRqEj3eJgEeuF5nulZtS9ixcdeBzA0",
+  authDomain: "gatepass-380112.firebaseapp.com",
+  projectId: "gatepass-380112",
+  storageBucket: "gatepass-380112.appspot.com",
+  messagingSenderId: "800428311109",
+  appId: "1:800428311109:web:74602dd50cb3adc5c8d92c",
+  measurementId: "G-SWSXX8Y876",
+};
+
 export const postUserLogin = (request: ILoginRequest) => {
   console.log(request);
   Axios.post("/api/login", request)

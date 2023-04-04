@@ -20,6 +20,10 @@ export const SignUpForm = ({ onChange }: Props) => {
   const [lastName, setLastName] = useState<string>("");
   const [signUpEmail, setSignUpEmail] = useState<string>("");
   const [signUpPassword, setSignUpPassword] = useState<string>("");
+  const [gstin, setGSTIn] = useState<string>("");
+  const [aadhaarNo, setAadhaarNo] = useState<string>("");
+  const [panNo, setPanNo] = useState<string>("");
+
   const [isVerificationCodeSent, setIsVerificationCodeSent] =
     useState<Boolean>(false);
   const [loading, setLoading] = useState(false);
@@ -102,6 +106,42 @@ export const SignUpForm = ({ onChange }: Props) => {
                   autoComplete="off"
                   value={signUpPassword}
                   onChange={(e) => setSignUpPassword(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="gstin"
+                  label="Enter GST Number"
+                  id="gstin"
+                  autoComplete="off"
+                  value={gstin}
+                  onChange={(e) => setGSTIn(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="adhaarNo"
+                  label="Aadhaar Number"
+                  id="adhaarNo"
+                  autoComplete="off"
+                  value={aadhaarNo}
+                  onChange={(e) => setAadhaarNo(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="panNo"
+                  label="Pan Number"
+                  id="panNo"
+                  autoComplete="off"
+                  value={panNo}
+                  onChange={(e) => setPanNo(e.target.value)}
                 />
               </Grid>
             </Grid>
