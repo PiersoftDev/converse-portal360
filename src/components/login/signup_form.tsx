@@ -168,9 +168,9 @@ export const SignUpForm = ({ onChange }: Props) => {
             )}
             <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
               <Grid item>
-                <Button variant="text" onClick={() => onChange(true)}>
+                {/* <Button variant="text" onClick={() => onChange(true)}>
                   Already have an account? Log in
-                </Button>
+                </Button> */}
               </Grid>
             </Grid>
           </>

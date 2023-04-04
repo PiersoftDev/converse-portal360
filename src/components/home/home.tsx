@@ -32,7 +32,7 @@ export const Home = () => {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <Login />
+        {/* <Login /> */}
       </Dialog>
 
       <Row>

@@ -5,7 +5,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { LoginForm } from "./login_form";
 import { SignUpForm } from "./signup_form";
 
-export const Login = () => {
+export type Props = {
+  showSignInForm : boolean;
+  showSignUpForm : boolean;
+};
+
+export const Login = ({showSignInForm,showSignUpForm}: Props) => {
   const [showLogin, setShowLogin] = useState<Boolean>(true);
 
   return (
@@ -23,8 +28,8 @@ export const Login = () => {
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
-          {showLogin && <LoginForm onChange={setShowLogin} />}
-          {!showLogin && <SignUpForm onChange={setShowLogin} />}
+          {showSignInForm && <LoginForm onChange={setShowLogin} />}
+          {showSignUpForm && <SignUpForm onChange={setShowLogin} />}
         </Box>
       </Container>
     </div>

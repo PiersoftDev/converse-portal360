@@ -16,6 +16,8 @@ import img5 from "../../images/hero_img_5.png";
 import img6 from "../../images/hero_img_6.png";
 import happy from "../../images/happy.png";
 import Grid from "@mui/material/Unstable_Grid2";
+import { SignUpForm } from "../login/signup_form";
+import { LoginForm } from "../login/login_form";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -50,14 +52,20 @@ export const Home = () => {
         onClose={handleSignInClose}
         TransitionComponent={Transition}
       >
-        <Login />
+        <Login
+          showSignInForm={showSignInPopup}
+          showSignUpForm={showSignUpPopup}
+        />
       </Dialog>
       <Dialog
         open={showSignUpPopup}
         onClose={handleSignUpClose}
         TransitionComponent={Transition}
       >
-        <Login showSignIn={true}/>
+        <Login
+          showSignInForm={showSignInPopup}
+          showSignUpForm={showSignUpPopup}
+        />
       </Dialog>
       <Container>
         <Box
@@ -135,11 +143,9 @@ export const Home = () => {
                   </i>
                   {/* </div> */}
                   us on this epic adventure to put the pieces together and
-                  
                   <i style={{ color: "#FF4D54" }}>
                     <span> Build </span>
                   </i>
-                  
                   something meaningful.
                 </h5>
                 <div

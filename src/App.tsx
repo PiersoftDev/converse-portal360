@@ -17,7 +17,7 @@ function App() {
       <Routes>
         {/* Header */}
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/dashboard" element={<LandingPage />} />
         <Route path="/vendor-onboarding" element={<VendorOnboarding />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />

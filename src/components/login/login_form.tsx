@@ -103,9 +103,9 @@ export const LoginForm = ({ onChange }: Props) => {
         )}
         <Grid container justifyContent="flex-end" sx={{ mb: 5 }}>
           <Grid item>
-            <Button variant="text" onClick={() => onChange(false)}>
+            {/* <Button variant="text" onClick={() => onChange(false)}>
               New? Create Account
-            </Button>
+            </Button> */}
             <Button variant="text" onClick={() => onChange(false)} sx={{color: "#9C27B0"}}>
               Forgot Password
             </Button>
